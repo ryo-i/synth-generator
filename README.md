@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- ローカルではnpm run build成功 [#1](https://github.com/ryo-i/synth-generator/issues/1)
+- タイトルを変更 [#2](https://github.com/ryo-i/synth-generator/issues/2)
 
 ## 詳細（ブログ）
 
