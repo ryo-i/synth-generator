@@ -36,9 +36,9 @@ function Header() {
         <p dangerouslySetInnerHTML={{ __html: text }}></p>
         <nav>
           <span>MENU:</span>
-          <Link href="/"><a>Home</a></Link>
-          <Link href="/about"><a>About</a></Link>
-          <Link href="/scale_type"><a>Scale Type</a></Link>
+          <Link href="/">Home</Link>
+          <Link href="/about">About</Link>
+          <Link href="/scale_type">Scale Type</Link>
         </nav>
       </div>
     </HeaderTag>

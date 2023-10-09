@@ -1,15 +1,15 @@
-# スケールプレイヤー
+# シンセジェネレーター
 
-Tone.jsを使ったスケールプレイヤー
+Tone.jsを使ったシンセジェネレーター
 
 ## 作ったもの
 
-※参考：[プレビュー](https://scale-player.vercel.app/)
+※参考：[プレビュー]()
 
 ## 進捗（コミット）
 
-- ブログ完成。リンクを追加 [#4](https://github.com/ryo-i/scale-player/issues/4)
+- パッケージ類を更新 [#1](https://github.com/ryo-i/synth-generator/issues/1)
 
 ## 詳細（ブログ）
 
-※参考：[【React & Tone.js】スケールプレイヤーを作った（いろいろなスケールを調べて音も聴けるアプリ）](https://www.i-ryo.com/entry/2021/11/28/153950)
+※参考：[作成中]())
