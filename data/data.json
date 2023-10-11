@@ -24,19 +24,7 @@
         {"value": "A4", "className": "w_key", "keyName": "A"},
         {"value": "A#4", "className": "b_key", "keyName": "A#"},
         {"value": "B4", "className": "w_key", "keyName": "B"},
-        {"value": "C5", "className": "w_key", "keyName": "C"},
-        {"value": "C#5", "className": "b_key", "keyName": "C#"},
-        {"value": "D5", "className": "w_key", "keyName": "D"},
-        {"value": "D#5", "className": "b_key", "keyName": "D#"},
-        {"value": "E5", "className": "w_key", "keyName": "E"},
-        {"value": "F5", "className": "w_key", "keyName": "F"},
-        {"value": "F#5", "className": "b_key", "keyName": "F#"},
-        {"value": "G5", "className": "w_key", "keyName": "G"},
-        {"value": "G#5", "className": "b_key", "keyName": "G#"},
-        {"value": "A5", "className": "w_key", "keyName": "A"},
-        {"value": "A#5", "className": "b_key", "keyName": "A#"},
-        {"value": "B5", "className": "w_key", "keyName": "B"},
-        {"value": "C6", "className": "w_key", "keyName": "C"}
+        {"value": "C5", "className": "w_key", "keyName": "C"}
       ],
       "scale": [
           "null",
