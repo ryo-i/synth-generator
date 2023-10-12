@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- 最低限の内容を表示 [#2](https://github.com/ryo-i/synth-generator/issues/2)
+- スケール関係の内容をコメントアウト [#2](https://github.com/ryo-i/synth-generator/issues/2)
 
 ## 詳細（ブログ）
 

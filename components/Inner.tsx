@@ -169,23 +169,23 @@ const ScalePlayer = styled.div`
 function Inner() {
   // Hooks
   const [synth, setSynth] = useState(null);
-  const [scales, setScales] = useState([]);
-  const [scale, setScale] = useState(['-']);
-  const [keyValue, setKeyValue] = useState(inner.keyTypeButtons[0].value);
-  const [keyType, setKeyType] = useState(inner.keyTypeButtons[0].keyTypeName);
-  const [scaleInterval, setScaleInterval] = useState('-');
-  const [scaleValue, setScaleValue] = useState(inner.scaleTypes[0].scaleValue);
-  const [scaleKeys, setScaleKeys] = useState(inner.scaleTypes[0].scaleKeys.join(', '));
-  const [scaleName, setScaleName] = useState(inner.scaleTypeButtons.basicScale[0].scaleName);
+  // const [scales, setScales] = useState([]);
+  // const [scale, setScale] = useState(['-']);
+  // const [keyValue, setKeyValue] = useState(inner.keyTypeButtons[0].value);
+  // const [keyType, setKeyType] = useState(inner.keyTypeButtons[0].keyTypeName);
+  // const [scaleInterval, setScaleInterval] = useState('-');
+  // const [scaleValue, setScaleValue] = useState(inner.scaleTypes[0].scaleValue);
+  // const [scaleKeys, setScaleKeys] = useState(inner.scaleTypes[0].scaleKeys.join(', '));
+  // const [scaleName, setScaleName] = useState(inner.scaleTypeButtons.basicScale[0].scaleName);
   const keyElement = useRef<HTMLInputElement>(null);
-  const scaleTypeElement = useRef<HTMLInputElement>(null);
+  // const scaleTypeElement = useRef<HTMLInputElement>(null);
 
 
   // オブジェクト設定
-  interface scaleTypes {
-    scaleValue: string;
-    scaleKeys: number[];
-  };
+  // interface scaleTypes {
+  //   scaleValue: string;
+  //   scaleKeys: number[];
+  // };
 
   interface keyButtons {
     value: string;
@@ -194,18 +194,18 @@ function Inner() {
     keyName: string;
   };
 
-  interface keyTypeButtons {
-    value: string;
-    keyTypeName: string;
-    className: string;
-    defaultChecked: boolean;
-  };
+  // interface keyTypeButtons {
+  //   value: string;
+  //   keyTypeName: string;
+  //   className: string;
+  //   defaultChecked: boolean;
+  // };
 
-  interface scaleTypeButtons {
-    scaleValue: string;
-    scaleName: string;
-    defaultChecked: boolean;
-  };
+  // interface scaleTypeButtons {
+  //   scaleValue: string;
+  //   scaleName: string;
+  //   defaultChecked: boolean;
+  // };
 
 
   // シンセ設定
@@ -215,50 +215,50 @@ function Inner() {
 
 
   // 鍵盤リセット
-  const resetKey = (): void => {
-    const keyElements: HTMLCollection = keyElement.current.children;
-    for (let i = 0; i < keyElements.length; i++) {
-      if (keyElements[i].classList.contains('current')) {
-        keyElements[i].classList.remove('current');
-      }
-    }
-  };
+  // const resetKey = (): void => {
+  //   const keyElements: HTMLCollection = keyElement.current.children;
+  //   for (let i = 0; i < keyElements.length; i++) {
+  //     if (keyElements[i].classList.contains('current')) {
+  //       keyElements[i].classList.remove('current');
+  //     }
+  //   }
+  // };
 
 
   // 鍵盤カレント
-  const currentKey = (currentScale): void => {
-    const keyElements: HTMLCollection = keyElement.current.children;
-    for (let i = 0; i < keyElements.length; i++) {
-      const getKeyElement: HTMLButtonElement = keyElements[i] as HTMLButtonElement;
-      const keyText: string = getKeyElement.value;
-      if (currentScale.includes(keyText)) {
-        keyElements[i].classList.add('current');
-      }
-    }
-  };
+  // const currentKey = (currentScale): void => {
+  //   const keyElements: HTMLCollection = keyElement.current.children;
+  //   for (let i = 0; i < keyElements.length; i++) {
+  //     const getKeyElement: HTMLButtonElement = keyElements[i] as HTMLButtonElement;
+  //     const keyText: string = getKeyElement.value;
+  //     if (currentScale.includes(keyText)) {
+  //       keyElements[i].classList.add('current');
+  //     }
+  //   }
+  // };
 
 
   // 最新のスケール取得
-  const getScale = (key: string, scales: string[][]): string[] => {
-    let getCurrentScale: string[];
-    for (let i = 0 ; i < scales.length; i++) {
-      if (scales[i].indexOf(key) === 0) {
-        getCurrentScale = scales[i];
-      }
-    }
-    return getCurrentScale;
-  };
+  // const getScale = (key: string, scales: string[][]): string[] => {
+  //   let getCurrentScale: string[];
+  //   for (let i = 0 ; i < scales.length; i++) {
+  //     if (scales[i].indexOf(key) === 0) {
+  //       getCurrentScale = scales[i];
+  //     }
+  //   }
+  //   return getCurrentScale;
+  // };
 
 
   // 鍵盤の構成音のテキスト取得
-  const scaleKeysText = (scale: string[]): string[] => {
-    let scaleKeysText: string[] = [];
-    for (let i = 0; i < scale.length; i++) {
-      const getScaleText: string = scale[i].slice(0, -1);
-      scaleKeysText.push(getScaleText);
-    }
-    return scaleKeysText;
-  };
+  // const scaleKeysText = (scale: string[]): string[] => {
+  //   let scaleKeysText: string[] = [];
+  //   for (let i = 0; i < scale.length; i++) {
+  //     const getScaleText: string = scale[i].slice(0, -1);
+  //     scaleKeysText.push(getScaleText);
+  //   }
+  //   return scaleKeysText;
+  // };
 
 
   // 鍵盤クリックイベント
@@ -270,107 +270,107 @@ function Inner() {
 
 
   // 再生ボタン
-  let changeScalePlay = (): void => {
-    Tone.Transport.stop();
-    Tone.Transport.cancel();
+  // let changeScalePlay = (): void => {
+  //   Tone.Transport.stop();
+  //   Tone.Transport.cancel();
 
-    const currentScale = scale;
-    const synth = new Tone.Synth().toDestination();
-    const seq = new Tone.Sequence((time, note) => {
-      synth.triggerAttackRelease(note, '8n', time);
-    }, currentScale).start(0);
-    seq.loop = false;
-    Tone.Transport.bpm.value = 80;
+  //   const currentScale = scale;
+  //   const synth = new Tone.Synth().toDestination();
+  //   const seq = new Tone.Sequence((time, note) => {
+  //     synth.triggerAttackRelease(note, '8n', time);
+  //   }, currentScale).start(0);
+  //   seq.loop = false;
+  //   Tone.Transport.bpm.value = 80;
 
-    Tone.Transport.start();
-  };
+  //   Tone.Transport.start();
+  // };
 
   // スケールタイプ取得
-  const getScaleTypes = (getScaleValue: string): scaleTypes => {
-    let getScaleTypes: scaleTypes;
-    for (let i = 0; i < inner.scaleTypes.length; i++) {
-      if (inner.scaleTypes[i].scaleValue === getScaleValue) {
-        getScaleTypes = inner.scaleTypes[i];
-      }
-    }
-    return getScaleTypes;
-  };
+  // const getScaleTypes = (getScaleValue: string): scaleTypes => {
+  //   let getScaleTypes: scaleTypes;
+  //   for (let i = 0; i < inner.scaleTypes.length; i++) {
+  //     if (inner.scaleTypes[i].scaleValue === getScaleValue) {
+  //       getScaleTypes = inner.scaleTypes[i];
+  //     }
+  //   }
+  //   return getScaleTypes;
+  // };
 
 
   // スケール取得
-  const getScales = (scaleTypes: scaleTypes): string[][] => {
-    let getScales: string[][] = [];
-    for (let i = 0 ; i < inner.keyButtons.length; i++) {
-      getScales.push([]);
-      for (var  j = 0; j < scaleTypes['scaleKeys'].length; j++){
-        const key: string = inner.scale[i+scaleTypes['scaleKeys'][j]];
-        getScales[i].push(key);
-      }
-    }
-    return getScales;
-  };
+  // const getScales = (scaleTypes: scaleTypes): string[][] => {
+  //   let getScales: string[][] = [];
+  //   for (let i = 0 ; i < inner.keyButtons.length; i++) {
+  //     getScales.push([]);
+  //     for (var  j = 0; j < scaleTypes['scaleKeys'].length; j++){
+  //       const key: string = inner.scale[i+scaleTypes['scaleKeys'][j]];
+  //       getScales[i].push(key);
+  //     }
+  //   }
+  //   return getScales;
+  // };
 
 
   // スケール構成音変更
-  const changeScaleInterval = (currentScales: string[][]): void => {
-    const getCurrentScale: string[] = getScale(keyValue, currentScales);
-    setScale(getCurrentScale);
-    resetKey();
-    currentKey(getCurrentScale);
+  // const changeScaleInterval = (currentScales: string[][]): void => {
+  //   const getCurrentScale: string[] = getScale(keyValue, currentScales);
+  //   setScale(getCurrentScale);
+  //   resetKey();
+  //   currentKey(getCurrentScale);
 
-    const getScalesIntervalsArray: string[] = scaleKeysText(getCurrentScale);
-    const getScalesIntervals: string = getScalesIntervalsArray.join(', ');
-    setScaleInterval(getScalesIntervals);
-  };
+  //   const getScalesIntervalsArray: string[] = scaleKeysText(getCurrentScale);
+  //   const getScalesIntervals: string = getScalesIntervalsArray.join(', ');
+  //   setScaleInterval(getScalesIntervals);
+  // };
 
 
   // スケール初期設定
-  useEffect(() => {
-    const getCurrentScaleTypes: scaleTypes = getScaleTypes(scaleValue);
-    const getCurrentScales: string[][] = getScales(getCurrentScaleTypes);
-    setScales(getCurrentScales);
-    setScale(getCurrentScales[0]);
-    changeScaleInterval(getCurrentScales);
-  },[]);
+  // useEffect(() => {
+  //   const getCurrentScaleTypes: scaleTypes = getScaleTypes(scaleValue);
+  //   const getCurrentScales: string[][] = getScales(getCurrentScaleTypes);
+  //   setScales(getCurrentScales);
+  //   setScale(getCurrentScales[0]);
+  //   changeScaleInterval(getCurrentScales);
+  // },[]);
 
 
   // キー変更イベント
-  const keyTypeSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const getKeyValue: string = e.target.value;
-    setKeyValue(getKeyValue);
+  // const keyTypeSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  //   const getKeyValue: string = e.target.value;
+  //   setKeyValue(getKeyValue);
 
-    const scaleArray: string[] = [];
-    scaleArray.push(getKeyValue);
-    const getKeyTypeName = scaleKeysText(scaleArray);
-    const getkey = getKeyTypeName[0];
-    setKeyType(getkey);
+  //   const scaleArray: string[] = [];
+  //   scaleArray.push(getKeyValue);
+  //   const getKeyTypeName = scaleKeysText(scaleArray);
+  //   const getkey = getKeyTypeName[0];
+  //   setKeyType(getkey);
 
-    const getCurrentScale: string[] = getScale(getKeyValue, scales);
-    setScale(getCurrentScale);
-    resetKey();
-    currentKey(getCurrentScale);
+  //   const getCurrentScale: string[] = getScale(getKeyValue, scales);
+  //   setScale(getCurrentScale);
+  //   resetKey();
+  //   currentKey(getCurrentScale);
 
-    const getScalesIntervalsArray: string[] = scaleKeysText(getCurrentScale);
-    const getKeyType: string = getScalesIntervalsArray[0];
-    const getScalesIntervals: string = getScalesIntervalsArray.join(', ');
-    setKeyType(getKeyType);
-    setScaleInterval(getScalesIntervals);
-  }
+  //   const getScalesIntervalsArray: string[] = scaleKeysText(getCurrentScale);
+  //   const getKeyType: string = getScalesIntervalsArray[0];
+  //   const getScalesIntervals: string = getScalesIntervalsArray.join(', ');
+  //   setKeyType(getKeyType);
+  //   setScaleInterval(getScalesIntervals);
+  // }
 
 
   // スケール変更イベント
-  const scaleTypeSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const getScaleValue: string = e.target.value;
-    const getCurrentScaleTypes: scaleTypes = getScaleTypes(getScaleValue);
-    const getScaleName: string = e.target.dataset.scaleName;
-    setScaleValue(getCurrentScaleTypes.scaleValue);
-    setScaleKeys(getCurrentScaleTypes.scaleKeys.join(', '));
-    setScaleName(getScaleName);
+  // const scaleTypeSelect = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  //   const getScaleValue: string = e.target.value;
+  //   const getCurrentScaleTypes: scaleTypes = getScaleTypes(getScaleValue);
+  //   const getScaleName: string = e.target.dataset.scaleName;
+  //   setScaleValue(getCurrentScaleTypes.scaleValue);
+  //   setScaleKeys(getCurrentScaleTypes.scaleKeys.join(', '));
+  //   setScaleName(getScaleName);
 
-    const getCurrentScales: string[][] = getScales(getCurrentScaleTypes);
-    setScales(getCurrentScales);
-    changeScaleInterval(getCurrentScales);
-  }
+  //   const getCurrentScales: string[][] = getScales(getCurrentScaleTypes);
+  //   setScales(getCurrentScales);
+  //   changeScaleInterval(getCurrentScales);
+  // }
 
 
   // JSX
