@@ -11,21 +11,32 @@
       "text": "メインページのテキストです。テキストですったらテキストです。"
     },
     "inner": {
-      "keyButtons": [
-        {"value": "C4", "className": "w_key", "keyName": "C"},
-        {"value": "C#4", "className": "b_key", "keyName": "C#"},
-        {"value": "D4", "className": "w_key", "keyName": "D"},
-        {"value": "D#4", "className": "b_key", "keyName": "D#"},
-        {"value": "E4", "className": "w_key", "keyName": "E"},
-        {"value": "F4", "className": "w_key", "keyName": "F"},
-        {"value": "F#4", "className": "b_key", "keyName": "F#"},
-        {"value": "G4", "className": "w_key", "keyName": "G"},
-        {"value": "G#4", "className": "b_key", "keyName": "G#"},
-        {"value": "A4", "className": "w_key", "keyName": "A"},
-        {"value": "A#4", "className": "b_key", "keyName": "A#"},
-        {"value": "B4", "className": "w_key", "keyName": "B"},
-        {"value": "C5", "className": "w_key", "keyName": "C"}
-      ],
+      "keyButtons": {
+        "octave": 8,
+        "keyLength": 88,
+        "low": [
+          {"value": "A0", "className": "w_key", "keyName": "A0"},
+          {"value": "A#0", "className": "b_key", "keyName": "A#0"},
+          {"value": "B0", "className": "w_key", "keyName": "B0"}
+        ],
+        "middle": [
+          {"value": "C", "className": "w_key c_key", "keyName": "C"},
+          {"value": "C#", "className": "b_key", "keyName": "C#"},
+          {"value": "D", "className": "w_key", "keyName": "D"},
+          {"value": "D#", "className": "b_key", "keyName": "D#"},
+          {"value": "E", "className": "w_key", "keyName": "E"},
+          {"value": "F", "className": "w_key", "keyName": "F"},
+          {"value": "F#", "className": "b_key", "keyName": "F#"},
+          {"value": "G", "className": "w_key", "keyName": "G"},
+          {"value": "G#", "className": "b_key", "keyName": "G#"},
+          {"value": "A", "className": "w_key", "keyName": "A"},
+          {"value": "A#", "className": "b_key", "keyName": "A#"},
+          {"value": "B", "className": "w_key", "keyName": "B"}
+        ],
+        "high": [
+          {"value": "C8", "className": "w_key c_key", "keyName": "C8"}
+        ]
+      },
       "scale": [
           "null",
           "C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4",

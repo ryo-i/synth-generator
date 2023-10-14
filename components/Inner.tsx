@@ -5,25 +5,25 @@ import 'react-tabs/style/react-tabs.css';
 import { inner } from '../data/data.json';
 import * as Tone from 'tone';
 
+const keyWidth = 40;
+const keyLlength = 52;
+
 
 // CSS in JS
-const keyWidth = '37px'
-const keyLlength = 8;
-
 const ScalePlayer = styled.div`
   color: #fff;
   #key {
-    max-width: calc(${keyWidth} * ${keyLlength});
+    max-width: calc(${keyWidth + 'px'} * ${keyLlength});
     margin: 0 auto;
     overflow-x: scroll;
     .key_inner {
       background: #333;
-      width: calc(${keyWidth} * ${keyLlength});
+      width: calc(${keyWidth + 'px'} * ${keyLlength});
       display: block;
       padding: 0 0 10px;
       position: relative;
       button {
-        width: ${keyWidth};
+        width: ${keyWidth + 'px'};
         text-align: center;
         display: inline-block;
         &:hover {
@@ -47,6 +47,9 @@ const ScalePlayer = styled.div`
         border-top-width: 0;
         color: #fff;
         height: 75px;
+      }
+      .c_key {
+        background: #ffe6b3;
       }
       .w_key.exclusion {
         background: #ccc;
@@ -179,6 +182,7 @@ function Inner() {
   // const [scaleName, setScaleName] = useState(inner.scaleTypeButtons.basicScale[0].scaleName);
   const keyElement = useRef<HTMLInputElement>(null);
   // const scaleTypeElement = useRef<HTMLInputElement>(null);
+  const [keyButtons, setKeyButtons] = useState([]);
 
 
   // オブジェクト設定
@@ -208,8 +212,40 @@ function Inner() {
   // };
 
 
-  // シンセ設定
+  // 鍵盤データ設定
+  const pushKeyButtons = () => {
+    const keyButtonsData = inner.keyButtons;
+    const resultArray = [];
+
+    // Push Low Kyes
+    for (let i = 0; i < keyButtonsData.low.length; i++) {
+      resultArray.push(keyButtonsData.low[i]);
+    }
+
+    // Push Middole Kyes
+    for (let i = 1; i < keyButtonsData.octave; i++) {
+      for (let j = 0; j < keyButtonsData.middle.length; j++) {
+        resultArray.push({
+          value: keyButtonsData.middle[j].value + i,
+          className: keyButtonsData.middle[j].className,
+          keyName: keyButtonsData.middle[j].value + i
+        });
+      }
+    }
+
+    // Push High Kyes
+    for (let i = 0; i < keyButtonsData.high.length; i++) {
+      resultArray.push(keyButtonsData.high[i]);
+    }
+
+    setKeyButtons(resultArray);
+  };
+
+
+  // 鍵盤 & シンセ設定
   useEffect(() => {
+    pushKeyButtons();
+    document.querySelector('#key').scrollLeft = (keyWidth * 23);
     setSynth(new Tone.Synth().toDestination());
   },[]);
 
@@ -379,7 +415,7 @@ function Inner() {
       <ScalePlayer>
         <div id="key">
           <div className="key_inner" ref={keyElement}>
-            {inner.keyButtons.map((val: keyButtons) =>
+            {keyButtons.map((val: keyButtons) =>
               <button key={val.value} value={val.value} className={val.className}
               onClick={clickKey}>{val.keyName}</button>
             )}

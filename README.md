@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- スケール関係の内容をコメントアウト [#2](https://github.com/ryo-i/synth-generator/issues/2)
+- 鍵盤数をピアノと同じ88に変更 [#2](https://github.com/ryo-i/synth-generator/issues/2)
 
 ## 詳細（ブログ）
 
