@@ -38,7 +38,7 @@ function Header() {
           <span>MENU:</span>
           <Link href="/">Home</Link>
           <Link href="/about">About</Link>
-          <Link href="/scale_type">Scale Type</Link>
+          { /* <Link href="/scale_type">Scale Type</Link> */ }
         </nav>
       </div>
     </HeaderTag>

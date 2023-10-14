@@ -8,7 +8,7 @@ import Data from '../data/data.json';
 
 const headerTitle = Data.header.title;
 const pageTitle = 'このアプリについて';
-const pageText = 'いろいろなスケール（音階）の構成音を確認でき、音も聴けるスケールプレイヤーです。キーの変更、スケールの変更による構成音の違いを調べることができます。';
+const pageText = 'Tone.js内蔵のシンセサイザーを鍵盤で音を鳴らしながら設定値を変更しながら音作りができるアプリです。';
 const headTitle = pageTitle + ' | ' + headerTitle;
 
 
@@ -51,6 +51,23 @@ function About() {
             <h1>{ pageTitle }</h1>
             <p dangerouslySetInnerHTML={{ __html: pageText }}></p>
             <section>
+                <h2>進捗</h2>
+                <ul>
+                    <li>Aboutページを修正 <a href="https://github.com/ryo-i/synth-generator/issues/2">#2</a></li>
+                </ul>
+            </section>
+            <section>
+                <h2>詳細</h2>
+                <section>
+                    <h3>ブログ</h3>
+                    <p>作成中</p>
+                </section>
+                <section>
+                    <h3>ソースコード（GitHub）</h3>
+                    <p><a href="https://github.com/ryo-i/synth-generator" target="_blank">リポジトリ</a></p>
+                </section>
+            </section>
+            { /* <section>
                 <h2>使い方</h2>
                 <section>
                     <h3>用途</h3>
@@ -119,7 +136,7 @@ function About() {
                     <h3>ソースコード（GitHub）</h3>
                     <p><a href="https://github.com/ryo-i/scale-player">リポジトリ</a></p>
                 </section>
-            </section>
+            </section> */ }
             <Profile />
         </Main>
         <Footer />
