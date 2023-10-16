@@ -297,11 +297,16 @@ function Inner() {
   // };
 
 
-  // 鍵盤クリックイベント
-  const clickKey = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  // 鍵盤イベント
+  const keyAttack = (e) => {
+    synth.triggerRelease();
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
     const KeyValue: string = eventTarget.value;
-    synth.triggerAttackRelease(KeyValue, 0.4);
+    synth.triggerAttack(KeyValue, 0.4);
+  };
+
+  const keyRelease = () => {
+    synth.triggerRelease();
   };
 
 
@@ -417,7 +422,7 @@ function Inner() {
           <div className="key_inner" ref={keyElement}>
             {keyButtons.map((val: keyButtons) =>
               <button key={val.value} value={val.value} className={val.className}
-              onClick={clickKey}>{val.keyName}</button>
+              onMouseDown={keyAttack} onMouseUp={keyRelease} onTouchStart={keyAttack} onTouchEnd={keyRelease}>{val.keyName}</button>
             )}
           </div>
         </div>

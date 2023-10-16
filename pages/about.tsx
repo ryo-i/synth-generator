@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>Aboutページを修正 <a href="https://github.com/ryo-i/synth-generator/issues/2">#2</a></li>
+                    <li>鍵盤を押した長さと音の長さを同期 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
                 </ul>
             </section>
             <section>
