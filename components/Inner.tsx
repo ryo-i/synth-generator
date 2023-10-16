@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { inner } from '../data/data.json';
 import * as Tone from 'tone';
+import { on } from 'process';
 
 const keyWidth = 40;
 const keyLlength = 52;
@@ -183,6 +184,7 @@ function Inner() {
   const keyElement = useRef<HTMLInputElement>(null);
   // const scaleTypeElement = useRef<HTMLInputElement>(null);
   const [keyButtons, setKeyButtons] = useState([]);
+  const [sound, setSound] = useState(false);
 
 
   // オブジェクト設定
@@ -299,10 +301,12 @@ function Inner() {
 
   // 鍵盤イベント
   const keyAttack = (e) => {
-    synth.triggerRelease();
-    const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
-    const KeyValue: string = eventTarget.value;
-    synth.triggerAttack(KeyValue, 0.4);
+    console.log('sound', sound)
+    if (sound) {
+      const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
+      const KeyValue: string = eventTarget.value;
+      synth.triggerAttack(KeyValue, 0.4);
+    }
   };
 
   const keyRelease = () => {
@@ -413,6 +417,16 @@ function Inner() {
   //   changeScaleInterval(getCurrentScales);
   // }
 
+  const startSound = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const KeyValue: string = e.target.value;
+    console.log('KeyValue', KeyValue)
+    if (KeyValue === 'on') {
+      setSound(true);
+    } else {
+      setSound(false);
+    }
+  }
+
 
   // JSX
   return (
@@ -421,8 +435,15 @@ function Inner() {
         <div id="key">
           <div className="key_inner" ref={keyElement}>
             {keyButtons.map((val: keyButtons) =>
-              <button key={val.value} value={val.value} className={val.className}
-              onMouseDown={keyAttack} onMouseUp={keyRelease} onTouchStart={keyAttack} onTouchEnd={keyRelease}>{val.keyName}</button>
+              <button
+                key={val.value}
+                value={val.value}
+                className={val.className}
+                onPointerDown={keyAttack}
+                onPointerUp={keyRelease}
+              >
+                {val.keyName}
+              </button>
             )}
           </div>
         </div>
@@ -453,7 +474,11 @@ function Inner() {
                 <section id="tonality" className="scale_type">
                   <h3>ジェネレーター</h3>
                   <dl id="basic_scale">
-                    <dt>xxx</dt>
+                    <dt>Sound</dt>
+                    <dd><label><input type="radio" name="sound" value="on" onChange={startSound}
+                     />On</label>
+                     <label><input type="radio" name="sound" value="off" onChange={startSound} defaultChecked
+                     />Off</label></dd>
                     <dd><label><input type="range" name="scale_type" />xxx</label></dd>
                   </dl>
                   {/* <dl id="basic_scale">

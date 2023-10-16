@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- 鍵盤を押した長さと音の長さを同期 [#3](https://github.com/ryo-i/synth-generator/issues/3)
+- Sound on/offボタン追加 [#3](https://github.com/ryo-i/synth-generator/issues/3)
 
 ## 詳細（ブログ）
 
