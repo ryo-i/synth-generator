@@ -27,6 +27,7 @@ const ScalePlayer = styled.div`
         width: ${keyWidth + 'px'};
         text-align: center;
         display: inline-block;
+        user-select: none;
         &:hover {
           cursor: pointer;
         }
@@ -248,7 +249,7 @@ function Inner() {
   useEffect(() => {
     pushKeyButtons();
     document.querySelector('#key').scrollLeft = (keyWidth * 23);
-    setSynth(new Tone.Synth().toDestination());
+    setSynth(new Tone.Oscillator().toDestination());
   },[]);
 
 
@@ -299,18 +300,20 @@ function Inner() {
   // };
 
 
-  // 鍵盤イベント
+  // ボタンクリック時に音を再生
   const keyAttack = (e) => {
     console.log('sound', sound)
     if (sound) {
       const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
       const KeyValue: string = eventTarget.value;
-      synth.triggerAttack(KeyValue, 0.4);
+      synth.type = 'sine';
+      synth.frequency.value = KeyValue;
+      synth.start();
     }
   };
 
   const keyRelease = () => {
-    synth.triggerRelease();
+    synth.stop();
   };
 
 
