@@ -186,6 +186,7 @@ function Inner() {
   // const scaleTypeElement = useRef<HTMLInputElement>(null);
   const [keyButtons, setKeyButtons] = useState([]);
   const [sound, setSound] = useState(false);
+  const [carrentWaveType, setCarrentWaveType] = useState('sine');
 
 
   // オブジェクト設定
@@ -226,7 +227,7 @@ function Inner() {
     }
 
     // Push Middole Kyes
-    for (let i = 1; i < keyButtonsData.octave; i++) {
+    for (let i = 1; i < inner.octave; i++) {
       for (let j = 0; j < keyButtonsData.middle.length; j++) {
         resultArray.push({
           value: keyButtonsData.middle[j].value + i,
@@ -306,7 +307,7 @@ function Inner() {
     if (sound) {
       const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
       const KeyValue: string = eventTarget.value;
-      synth.type = 'sine';
+      synth.type = carrentWaveType;
       synth.frequency.value = KeyValue;
       synth.start();
     }
@@ -428,7 +429,12 @@ function Inner() {
     } else {
       setSound(false);
     }
-  }
+  };
+
+  const changeType = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const KeyValue: string = e.target.value;
+    setCarrentWaveType(KeyValue);
+  };
 
 
   // JSX
@@ -482,7 +488,11 @@ function Inner() {
                      />On</label>
                      <label><input type="radio" name="sound" value="off" onChange={startSound} defaultChecked
                      />Off</label></dd>
-                    <dd><label><input type="range" name="scale_type" />xxx</label></dd>
+                     <dt>Type</dt>
+                    <dd>{inner.waveTypes.map((type, index) =>
+                    <label key={index}><input type="radio" name="type" value={type} onChange={changeType} defaultChecked={index === 0 ? true : false}
+                    />{type}</label>
+                    )}</dd>
                   </dl>
                   {/* <dl id="basic_scale">
                     <dt>基本スケール</dt>

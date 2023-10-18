@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>synthをOscillatorに変更 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
+                    <li>波形を変更できるようにした <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
                 </ul>
             </section>
             <section>

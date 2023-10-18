@@ -11,9 +11,9 @@
       "text": "メインページのテキストです。テキストですったらテキストです。"
     },
     "inner": {
+      "octave": 8,
+      "waveTypes": ["sine", "square", "sawtooth", "triangle"],
       "keyButtons": {
-        "octave": 8,
-        "keyLength": 88,
         "low": [
           {"value": "A0", "className": "w_key", "keyName": "A0"},
           {"value": "A#0", "className": "b_key", "keyName": "A#0"},

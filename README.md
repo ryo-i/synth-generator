@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- synthをOscillatorに変更 [#3](https://github.com/ryo-i/synth-generator/issues/3)
+- 波形を変更できるようにした [#3](https://github.com/ryo-i/synth-generator/issues/3)
 
 ## 詳細（ブログ）
 
