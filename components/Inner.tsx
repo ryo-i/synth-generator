@@ -15,19 +15,20 @@ const ScalePlayer = styled.div`
   color: #fff;
   #key {
     max-width: calc(${keyWidth + 'px'} * ${keyLlength});
-    margin: 0 auto;
+    margin: 0 auto 20px;
     overflow-x: scroll;
     .key_inner {
-      background: #333;
+      background: #444;
       width: calc(${keyWidth + 'px'} * ${keyLlength});
       display: block;
-      padding: 0 0 10px;
+      padding: 0 0 30px;
       position: relative;
       button {
         width: ${keyWidth + 'px'};
         text-align: center;
         display: inline-block;
         user-select: none;
+        filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
         &:hover {
           cursor: pointer;
         }
@@ -44,8 +45,8 @@ const ScalePlayer = styled.div`
         top: 0;
         margin: 0 -20px;
         padding: 0;
-        background: #000;
-        border: 1px solid #fff;
+        background: #222;
+        border: 1px solid #000;
         border-top-width: 0;
         color: #fff;
         height: 75px;
@@ -449,6 +450,7 @@ function Inner() {
                 value={val.value}
                 className={val.className}
                 onPointerDown={keyAttack}
+                onPointerMove={keyRelease}
                 onPointerUp={keyRelease}
               >
                 {val.keyName}
@@ -488,7 +490,7 @@ function Inner() {
                      />On</label>
                      <label><input type="radio" name="sound" value="off" onChange={startSound} defaultChecked
                      />Off</label></dd>
-                     <dt>Type</dt>
+                     <dt>Wave</dt>
                     <dd>{inner.waveTypes.map((type, index) =>
                     <label key={index}><input type="radio" name="type" value={type} onChange={changeType} defaultChecked={index === 0 ? true : false}
                     />{type}</label>
