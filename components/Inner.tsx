@@ -301,6 +301,11 @@ function Inner() {
   //   return scaleKeysText;
   // };
 
+  const minimumDistance = 30
+  let startX = 0
+  let startY = 0
+  let endX = 0
+  let endY = 0
 
   // ボタンクリック時に音を再生
   const keyAttack = (e) => {
@@ -308,13 +313,30 @@ function Inner() {
     if (sound) {
       const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
       const KeyValue: string = eventTarget.value;
+
+      startX = e.pageX
+      startY = e.pageY
+
       synth.type = carrentWaveType;
       synth.frequency.value = KeyValue;
       synth.start();
     }
   };
 
-  const keyRelease = () => {
+  const keyMove = (e) => {
+    endX = e.pageX
+    endY = e.pageY
+  };
+
+  const keyRelease = (e) => {
+    const distanceX = Math.abs(endX - startX)
+    const distanceY = Math.abs(endX - startY)
+
+    if (distanceX > distanceY && distanceX > minimumDistance) {
+      console.log('スワイプ');
+      synth.stop();
+    }
+
     synth.stop();
   };
 
@@ -450,7 +472,7 @@ function Inner() {
                 value={val.value}
                 className={val.className}
                 onPointerDown={keyAttack}
-                onPointerMove={keyRelease}
+                onPointerMove={keyMove}
                 onPointerUp={keyRelease}
               >
                 {val.keyName}

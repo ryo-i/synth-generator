@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- スワイプで音を止める＆鍵盤スタイル修正 [#3](https://github.com/ryo-i/synth-generator/issues/3)
+- スワイプで音を止める-2 [#3](https://github.com/ryo-i/synth-generator/issues/3)
 
 ## 詳細（ブログ）
 

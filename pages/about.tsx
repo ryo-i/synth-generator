@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>スワイプで音を止める＆鍵盤スタイル修正 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
+                    <li>スワイプで音を止める-2 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
                 </ul>
             </section>
             <section>
