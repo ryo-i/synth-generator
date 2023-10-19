@@ -301,11 +301,11 @@ function Inner() {
   //   return scaleKeysText;
   // };
 
-  const minimumDistance = 30
-  let startX = 0
-  let startY = 0
-  let endX = 0
-  let endY = 0
+  const minimumDistance = 10;
+  let startX = 0;
+  let startY = 0;
+  let endX = 0;
+  let endY = 0;
 
   // ボタンクリック時に音を再生
   const keyAttack = (e) => {
@@ -329,6 +329,8 @@ function Inner() {
   };
 
   const keyRelease = (e) => {
+    synth.stop();
+
     const distanceX = Math.abs(endX - startX)
     const distanceY = Math.abs(endX - startY)
 
@@ -336,8 +338,6 @@ function Inner() {
       console.log('スワイプ');
       synth.stop();
     }
-
-    synth.stop();
   };
 
 
