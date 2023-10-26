@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- スワイプで音を止める-4 [#3](https://github.com/ryo-i/synth-generator/issues/3)
+- VCOにオクターブ変更を追加 [#3](https://github.com/ryo-i/synth-generator/issues/3)
 
 ## 詳細（ブログ）
 
