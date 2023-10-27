@@ -99,7 +99,7 @@ const ScalePlayer = styled.div`
     }
   }
 
-  #scale_menu {
+  #synth_menu {
     margin: 0 auto;
     max-width: 700px;
     .react-tabs__tab-list {
@@ -118,8 +118,8 @@ const ScalePlayer = styled.div`
     }
   }
 
-  #key_types,
-  .scale_type {
+  #synth_pannel,
+  .synth_type {
     margin: 0 auto 10px;
     max-width: 700px;
     border: 1px solid #eee;
@@ -159,11 +159,14 @@ const ScalePlayer = styled.div`
     }
   }
 
-  .scale_type {
+  .synth_type {
     dl {
       dd {
         @media (max-width: 400px) {
           display: block;
+        }
+        input[type="range"] {
+          width: 100%;
         }
       }
     }
@@ -180,6 +183,7 @@ function Inner() {
   const [sound, setSound] = useState(false);
   const [carrentWaveType, setCarrentWaveType] = useState('sine');
   const [octave, setOctave] = useState(0);
+  const [coarse, setCoarse] = useState(0);
 
   interface keyButtons {
     value: string;
@@ -227,17 +231,33 @@ function Inner() {
   },[]);
 
 
-  // オクターブ変更後の音程を取得
-  const getOctaveKey = (KeyValue) => {
+  // 音階が何番目にあるかを取得
+  const getCurrentNumber = (KeyValue) => {
     let currentNumber = 0;
     for (let i = 0; i < keyButtons.length; i++) {
       if (keyButtons[i].value == KeyValue) {
         currentNumber = i;
       }
     }
+    return currentNumber;
+  };
+
+
+  // オクターブ変更後の音程を取得
+  const getOctaveKey = (KeyValue) => {
+    let currentNumber = getCurrentNumber(KeyValue);
     let changeOctaveNumber = currentNumber + (octave * 12);
     const changeOctaveKey = keyButtons[changeOctaveNumber] ? keyButtons[changeOctaveNumber].value : '';
     return changeOctaveKey;
+  }
+
+
+  // 音階変更後の音程を取得
+  const getCoarseKey = (KeyValue) => {
+    let currentNumber = getCurrentNumber(KeyValue);
+    let changeCoarseNumber = currentNumber + coarse;
+    const changeCoarseKey = keyButtons[changeCoarseNumber] ? keyButtons[changeCoarseNumber].value : '';
+    return changeCoarseKey;
   }
 
 
@@ -246,17 +266,19 @@ function Inner() {
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
     const KeyValue: string = eventTarget.value;
     const changeOctaveKey = getOctaveKey(KeyValue);
+    const changeCoarseKey = getCoarseKey(changeOctaveKey);
     console.log('changeOctaveKey', changeOctaveKey);
+    console.log('changeCoarseKey', changeCoarseKey);
 
-    if (sound && changeOctaveKey) {
+    if (sound && changeOctaveKey && changeCoarseKey) {
       synth.type = carrentWaveType;
-      synth.frequency.value = changeOctaveKey;
+      synth.frequency.value = changeCoarseKey;
       synth.start();
     }
   };
 
 
- // 鍵盤を押したら音を止める
+  // 鍵盤を押したら音を止める
   const keyRelease = (e) => {
     synth.stop();
   };
@@ -288,6 +310,13 @@ function Inner() {
   };
 
 
+  // 音階変更
+  const changeCoarse = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const KeyValue: number = Number(e.target.value);
+    setCoarse(KeyValue);
+  };
+
+
   // JSX
   return (
     <>
@@ -309,28 +338,27 @@ function Inner() {
             )}
           </div>
         </div>
-        <div id="scale_type">
+        <div id="synth">
           <Tabs>
-            <nav  id="scale_menu">
+            <nav  id="synth_menu">
               <TabList>
                   <Tab>VCO</Tab>
               </TabList>
             </nav>
-            <div id="scale_types">
+            <div id="synth_pannels">
               <TabPanel>
-                <section id="tonality" className="scale_type">
+                <section id="tonality" className="synth_type">
                   <h3>VCO 1</h3>
+                  <div className="onOffButton">
+                    <label>
+                      <input type="radio" name="sound" value="on" onChange={startSound} />On
+                    </label>
+                    <label>
+                      <input type="radio" name="sound" value="off" onChange={startSound} defaultChecked />Off
+                    </label>
+                  </div>
+                  <hr />
                   <dl id="basic_scale">
-                    <dt>On/Off</dt>
-                    <dd>
-                      <label>
-                        <input type="radio" name="sound" value="on" onChange={startSound} />On
-                      </label>
-                      <label>
-                        <input type="radio" name="sound" value="off" onChange={startSound} defaultChecked />Off
-                      </label>
-                    </dd>
-                    <hr />
                     <dt>Wave</dt>
                     <dd>
                       {inner.waveTypes.map((waveType, index) =>
@@ -342,9 +370,11 @@ function Inner() {
                     <hr />
                     <dt>Octave: {octave}</dt>
                     <dd>
-                      <label>
-                        <input type="range" name="octave" value={octave} onChange={changeOctave}  min="-3" max="3" />
-                      </label>
+                      <input type="range" name="octave" value={octave} onChange={changeOctave}  min="-3" max="3" />
+                    </dd>
+                    <dt>Coarse: {coarse}</dt>
+                    <dd>
+                      <input type="range" name="coarse" value={coarse} onChange={changeCoarse}  min="-12" max="12" />
                     </dd>
                   </dl>
                 </section>

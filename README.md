@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- VCOにオクターブ変更を追加 [#3](https://github.com/ryo-i/synth-generator/issues/3)
+- VCOに音階変更機能を追加 [#3](https://github.com/ryo-i/synth-generator/issues/3)
 
 ## 詳細（ブログ）
 
