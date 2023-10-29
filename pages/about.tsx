@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>VCOに音階変更機能を追加 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
+                    <li>VCOにFine(半音以下)設定を追加→オシレーターを2つに <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
                 </ul>
             </section>
             <section>
