@@ -120,7 +120,7 @@ const ScalePlayer = styled.div`
   }
 
   #synth_pannel,
-  .synth_type {
+  .synth_section {
     margin: 0 auto 10px;
     max-width: 700px;
     border: 1px solid #eee;
@@ -160,7 +160,7 @@ const ScalePlayer = styled.div`
     }
   }
 
-  .synth_type {
+  .synth_section {
     dl {
       dd {
         @media (max-width: 400px) {
@@ -182,8 +182,8 @@ function Inner() {
   const [keyButtons, setKeyButtons] = useState([]);
   const [osc1, setOsc1] = useState(null);
   const [osc2, setOsc2] = useState(null);
-  const [sound1, setSound1] = useState(false);
-  const [sound2, setSound2] = useState(false);
+  const [onOff1, setonOff1] = useState(false);
+  const [onOff2, setonOff2] = useState(false);
   const [waveType1, setWaveType1] = useState('square');
   const [waveType2, setWaveType2] = useState('square');
   const [octave1, setOctave1] = useState(0);
@@ -192,6 +192,20 @@ function Inner() {
   const [coarse2, setCoarse2] = useState(0);
   const [fine1, setFine1] = useState(0);
   const [fine2, setFine2] = useState(0);
+
+  const vcoData = {
+    vcoName: ['VCO 1', 'VCO 2'],
+    vcoId: ['1', '2'],
+    onOffName: ['onOff1', 'onOff2'],
+    waveTypeName: ['waveType1', 'waveType2'],
+    waveTypeValue: [waveType1, waveType2],
+    octaveName: ['octave1', 'octave2'],
+    octaveValue: [octave1, octave2],
+    coarseName: ['coarse1', 'coarse2'],
+    coarseValue: [coarse1, coarse2],
+    fineName: ['fine1', 'fine2'],
+    fineValue: [fine1, fine2],
+  };
 
   interface keyButtons {
     value: string;
@@ -275,10 +289,6 @@ function Inner() {
     const frequencyValue = Tone.Frequency(keyValue).toFrequency();
     const ratio = 0.0595 * (fine / 10);
     const getFrequencyValue = frequencyValue + (frequencyValue * ratio);
-    console.log('fine', fine);
-    console.log('ratio', ratio);
-    console.log('getFrequencyValue', getFrequencyValue);
-
     return getFrequencyValue;
   }
 
@@ -293,21 +303,14 @@ function Inner() {
     const changeOctaveKey2 = getOctaveKey(keyValue, octave2);
     const changeCoarseKey2 = getCoarseKey(changeOctaveKey2, coarse2);
     const changeFineValue2 = getFineValue(changeCoarseKey2, fine2);
-    console.log('changeOctaveKey1', changeOctaveKey1);
-    console.log('changeCoarseKey1', changeCoarseKey1);
-    console.log('changeFrequencyValue1', changeFineValue1);
-    console.log('changeOctaveKey2', changeOctaveKey2);
-    console.log('changeCoarseKey2', changeCoarseKey2);
-    console.log('changeFrequencyValue1', changeFineValue2);
 
-
-    if (sound1 && changeOctaveKey1 && changeCoarseKey1) {
+    if (onOff1 && changeOctaveKey1 && changeCoarseKey1) {
       osc1.type = waveType1;
       osc1.frequency.value = changeFineValue1;
       osc1.start();
     }
 
-    if (sound2 && changeOctaveKey2 && changeCoarseKey2) {
+    if (onOff2 && changeOctaveKey2 && changeCoarseKey2) {
       osc2.type = waveType2;
       osc2.frequency.value = changeFineValue2;
       osc2.start();
@@ -332,10 +335,10 @@ function Inner() {
 
     switch (oscType) {
       case '1':
-        setSound1(isSound);
+        setonOff1(isSound);
         break;
       case '2':
-        setSound2(isSound);
+        setonOff2(isSound);
         break;
     }
   };
@@ -431,76 +434,43 @@ function Inner() {
             </nav>
             <div id="synth_pannels">
               <TabPanel>
-                <section id="vco1" className="synth_type">
-                  <h3>VCO 1</h3>
-                  <div className="onOffButton">
-                    <label>
-                      <input type="radio" name="sound1" data-osc="1" value="on" onChange={changeSound} />On
-                    </label>
-                    <label>
-                      <input type="radio" name="sound1" data-osc="1" value="off" onChange={changeSound} defaultChecked />Off
-                    </label>
-                  </div>
-                  <hr />
-                  <dl id="basic_scale">
-                    <dt>Wave</dt>
-                    <dd>
-                      {inner.waveTypes.map((waveType, index) =>
-                        <label key={index}>
-                          <input type="radio" name="waveType1" data-osc="1" value={waveType1} onChange={changeWaveType} defaultChecked={waveType === waveType1 ? true : false} />{waveType1}
-                        </label>
-                      )}
-                    </dd>
+                {inner.vcoName.map((vcoName, index) =>
+                  <section id={vcoName} className="synth_section">
+                    <h3>{vcoData.vcoName[index]}</h3>
+                    <div className="onOffButton">
+                      <label>
+                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="on" onChange={changeSound} />On
+                      </label>
+                      <label>
+                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="off" onChange={changeSound} defaultChecked />Off
+                      </label>
+                    </div>
                     <hr />
-                    <dt>Octave: {octave1}</dt>
-                    <dd>
-                      <input type="range" name="octave1" data-osc="1" value={octave1} onChange={changeOctave}  min="-3" max="3" />
-                    </dd>
-                    <dt>Coarse: {coarse1}</dt>
-                    <dd>
-                      <input type="range" name="coarse1" data-osc="1" value={coarse1} onChange={changeCoarse}  min="-12" max="12" />
-                    </dd>
-                    <dt>Fine: {fine1}</dt>
-                    <dd>
-                      <input type="range" name="fine1" data-osc="1" value={fine1} onChange={changeFine}  min="-10" max="10" step="0.1" />
-                    </dd>
-                  </dl>
-                </section>
-                <section id="vco1" className="synth_type">
-                  <h3>VCO 2</h3>
-                  <div className="onOffButton">
-                    <label>
-                      <input type="radio" name="sound2" data-osc="2" value="on" onChange={changeSound} />On
-                    </label>
-                    <label>
-                      <input type="radio" name="sound2" data-osc="2" value="off" onChange={changeSound} defaultChecked />Off
-                    </label>
-                  </div>
-                  <hr />
-                  <dl id="basic_scale">
-                    <dt>Wave</dt>
-                    <dd>
-                      {inner.waveTypes.map((waveType, index) =>
-                        <label key={index}>
-                          <input type="radio" name="waveType2" data-osc="2" value={waveType2} onChange={changeWaveType} defaultChecked={waveType === waveType2 ? true : false} />{waveType2}
-                        </label>
-                      )}
-                    </dd>
-                    <hr />
-                    <dt>Octave: {octave2}</dt>
-                    <dd>
-                      <input type="range" name="octave2" data-osc="2" value={octave2} onChange={changeOctave}  min="-3" max="3" />
-                    </dd>
-                    <dt>Coarse: {coarse2}</dt>
-                    <dd>
-                      <input type="range" name="coarse2" data-osc="2" value={coarse2} onChange={changeCoarse}  min="-12" max="12" />
-                    </dd>
-                    <dt>Fine: {fine2}</dt>
-                    <dd>
-                      <input type="range" name="fine2" data-osc="2" value={fine2} onChange={changeFine}  min="-10" max="10" step="0.1" />
-                    </dd>
-                  </dl>
-                </section>
+                    <dl>
+                      <dt>Wave</dt>
+                      <dd>
+                        {inner.waveTypes.map((waveType, waveIndex) =>
+                          <label key={waveIndex}>
+                            <input type="radio" name={vcoData.waveTypeName[index]} data-osc={vcoData.vcoId[index]} value={waveType} onChange={changeWaveType} defaultChecked={waveType === (vcoData.waveTypeValue[index]) ? true : false} />{waveType}
+                          </label>
+                        )}
+                      </dd>
+                      <hr />
+                      <dt>Octave: {vcoData.octaveValue[index]}</dt>
+                      <dd>
+                        <input type="range" name={vcoData.octaveName[index]} data-osc={vcoData.vcoId[index]} value={vcoData.octaveValue[index]} onChange={changeOctave}  min="-3" max="3" />
+                      </dd>
+                      <dt>Coarse: {vcoData.coarseValue[index]}</dt>
+                      <dd>
+                        <input type="range" name={vcoData.coarseName[index]} data-osc={vcoData.vcoId[index]} value={vcoData.coarseValue[index]} onChange={changeCoarse}  min="-12" max="12" />
+                      </dd>
+                      <dt>Fine: {vcoData.fineValue[index]}</dt>
+                      <dd>
+                        <input type="range" name={vcoData.fineName[index]} data-osc={vcoData.vcoId[index]} value={vcoData.fineValue[index]} onChange={changeFine}  min="-10" max="10" step="0.1" />
+                      </dd>
+                    </dl>
+                  </section>
+                )}
               </TabPanel>
             </div>
           </Tabs>
