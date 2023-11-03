@@ -37,7 +37,7 @@
         ]
       },
       "vcoName": ["vco1", "vco2"],
-      "waveTypes": ["sine", "square", "sawtooth", "triangle"]
+      "waveTypes": ["sine", "triangle", "sawtooth", "pulse"]
     },
     "footer": {
         "text": "©️ イイダリョウ"

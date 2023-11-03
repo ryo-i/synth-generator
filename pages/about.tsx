@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>VCO1とVCO2が内容が似ているので一元化 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
+                    <li>波形のsquareをpulseにしてパルス幅を可変に <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
                 </ul>
             </section>
             <section>

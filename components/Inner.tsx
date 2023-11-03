@@ -182,10 +182,14 @@ function Inner() {
   const [keyButtons, setKeyButtons] = useState([]);
   const [osc1, setOsc1] = useState(null);
   const [osc2, setOsc2] = useState(null);
+  const [pulseOsc1, setPulseOsc1] = useState(null);
+  const [pulseOsc2, setPulseOsc2] = useState(null);
   const [onOff1, setonOff1] = useState(false);
   const [onOff2, setonOff2] = useState(false);
-  const [waveType1, setWaveType1] = useState('square');
-  const [waveType2, setWaveType2] = useState('square');
+  const [waveType1, setWaveType1] = useState('sawtooth');
+  const [waveType2, setWaveType2] = useState('sawtooth');
+  const [pulseWidth1, setPulseWidth1] = useState(0);
+  const [pulseWidth2, setPulseWidth2] = useState(0);
   const [octave1, setOctave1] = useState(0);
   const [octave2, setOctave2] = useState(0);
   const [coarse1, setCoarse1] = useState(0);
@@ -199,6 +203,8 @@ function Inner() {
     onOffName: ['onOff1', 'onOff2'],
     waveTypeName: ['waveType1', 'waveType2'],
     waveTypeValue: [waveType1, waveType2],
+    pulseWidthName: ['pulseWidth1', 'pulseWidth2'],
+    pulseWidthValue: [pulseWidth1, pulseWidth2],
     octaveName: ['octave1', 'octave2'],
     octaveValue: [octave1, octave2],
     coarseName: ['coarse1', 'coarse2'],
@@ -245,12 +251,14 @@ function Inner() {
   };
 
 
-  // 鍵盤 & シンセ設定
+  // 鍵盤 & シンセ初期設定
   useEffect(() => {
     pushKeyButtons();
     document.querySelector('#key').scrollLeft = (keyWidth * 23);
     setOsc1(new Tone.Oscillator().toDestination());
     setOsc2(new Tone.Oscillator().toDestination());
+    setPulseOsc1(new Tone.PulseOscillator().toDestination());
+    setPulseOsc2(new Tone.PulseOscillator().toDestination());
   },[]);
 
 
@@ -303,14 +311,26 @@ function Inner() {
     const changeOctaveKey2 = getOctaveKey(keyValue, octave2);
     const changeCoarseKey2 = getCoarseKey(changeOctaveKey2, coarse2);
     const changeFineValue2 = getFineValue(changeCoarseKey2, fine2);
+    const isValue1 = onOff1 && changeOctaveKey1 && changeCoarseKey1;
+    const isValue2 = onOff2 && changeOctaveKey2 && changeCoarseKey2;
+    const isPulse1 = waveType1 === 'pulse';
+    const isPulse2 = waveType2 === 'pulse';
 
-    if (onOff1 && changeOctaveKey1 && changeCoarseKey1) {
+    if (isValue1 && isPulse1) {
+      pulseOsc1.width.value = pulseWidth1;
+      pulseOsc1.frequency.value = changeFineValue1;
+      pulseOsc1.start();
+    } else if (isValue1) {
       osc1.type = waveType1;
       osc1.frequency.value = changeFineValue1;
       osc1.start();
     }
 
-    if (onOff2 && changeOctaveKey2 && changeCoarseKey2) {
+    if (isValue2 && isPulse2) {
+      pulseOsc2.width.value = pulseWidth2;
+      pulseOsc2.frequency.value = changeFineValue2;
+      pulseOsc2.start();
+    } else if (isValue2) {
       osc2.type = waveType2;
       osc2.frequency.value = changeFineValue2;
       osc2.start();
@@ -321,8 +341,20 @@ function Inner() {
 
   // 鍵盤を押したら音を止める
   const keyRelease = (e) => {
-    osc1.stop();
-    osc2.stop();
+    const isPulse1 = waveType1 === 'pulse';
+    const isPulse2 = waveType2 === 'pulse';
+
+    if (isPulse1) {
+      pulseOsc1.stop();
+    } else {
+      osc1.stop();
+    }
+
+    if (isPulse2) {
+      pulseOsc2.stop();
+    } else {
+      osc2.stop();
+    }
   };
 
 
@@ -358,6 +390,19 @@ function Inner() {
       }
   };
 
+
+  const changePulseWidth= (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    const oscType: string = e.target.dataset.osc;
+    switch (oscType) {
+      case '1':
+        setPulseWidth1(keyValue);
+        break;
+      case '2':
+        setPulseWidth2(keyValue);
+        break;
+      }
+  };
 
   // オクターブ変更
   const changeOctave = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -435,7 +480,7 @@ function Inner() {
             <div id="synth_pannels">
               <TabPanel>
                 {inner.vcoName.map((vcoName, index) =>
-                  <section id={vcoName} className="synth_section">
+                  <section id={vcoName} className="synth_section" key={index}>
                     <h3>{vcoData.vcoName[index]}</h3>
                     <div className="onOffButton">
                       <label>
@@ -454,6 +499,10 @@ function Inner() {
                             <input type="radio" name={vcoData.waveTypeName[index]} data-osc={vcoData.vcoId[index]} value={waveType} onChange={changeWaveType} defaultChecked={waveType === (vcoData.waveTypeValue[index]) ? true : false} />{waveType}
                           </label>
                         )}
+                      </dd>
+                      <dt>Pulse Width: {vcoData.pulseWidthValue[index]}（{vcoData.pulseWidthValue[index] * 50 + 50}％）</dt>
+                      <dd>
+                        <input type="range" name={vcoData.pulseWidthName[index]} data-osc={vcoData.vcoId[index]} value={vcoData.pulseWidthValue[index]} onChange={changePulseWidth}  min="0" max="1" step="0.02" />
                       </dd>
                       <hr />
                       <dt>Octave: {vcoData.octaveValue[index]}</dt>
