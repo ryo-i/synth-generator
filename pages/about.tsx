@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>波形のsquareをpulseにしてパルス幅を可変に <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
+                    <li>ノイズオシレーターを追加 <a href="https://github.com/ryo-i/synth-generator/issues/3">#3</a></li>
                 </ul>
             </section>
             <section>

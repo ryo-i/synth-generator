@@ -4,12 +4,9 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { inner } from '../data/data.json';
 import * as Tone from 'tone';
-import { on } from 'process';
-import { finished } from 'stream/promises';
 
 const keyWidth = 40;
 const keyLlength = 52;
-
 
 // CSS in JS
 const ScalePlayer = styled.div`
@@ -184,10 +181,13 @@ function Inner() {
   const [osc2, setOsc2] = useState(null);
   const [pulseOsc1, setPulseOsc1] = useState(null);
   const [pulseOsc2, setPulseOsc2] = useState(null);
-  const [onOff1, setonOff1] = useState(false);
-  const [onOff2, setonOff2] = useState(false);
+  const [noiseOsc, setNoiseOsc] = useState(null);
+  const [onOff1, setOnOff1] = useState(false);
+  const [onOff2, setOnOff2] = useState(false);
+  const [onOffNoise, setOnOffNoise] = useState(false);
   const [waveType1, setWaveType1] = useState('sawtooth');
   const [waveType2, setWaveType2] = useState('sawtooth');
+  const [waveTypeNoise, setWaveTypeNoise] = useState('white');
   const [pulseWidth1, setPulseWidth1] = useState(0);
   const [pulseWidth2, setPulseWidth2] = useState(0);
   const [octave1, setOctave1] = useState(0);
@@ -259,6 +259,7 @@ function Inner() {
     setOsc2(new Tone.Oscillator().toDestination());
     setPulseOsc1(new Tone.PulseOscillator().toDestination());
     setPulseOsc2(new Tone.PulseOscillator().toDestination());
+    setNoiseOsc(new Tone.Noise().toDestination());
   },[]);
 
 
@@ -336,25 +337,20 @@ function Inner() {
       osc2.start();
     }
 
+    if (onOffNoise) {
+      noiseOsc.type = waveTypeNoise;
+      noiseOsc.start();
+    }
   };
 
 
   // 鍵盤を押したら音を止める
-  const keyRelease = (e) => {
-    const isPulse1 = waveType1 === 'pulse';
-    const isPulse2 = waveType2 === 'pulse';
-
-    if (isPulse1) {
-      pulseOsc1.stop();
-    } else {
-      osc1.stop();
-    }
-
-    if (isPulse2) {
-      pulseOsc2.stop();
-    } else {
-      osc2.stop();
-    }
+  const keyRelease = () => {
+    pulseOsc1.stop();
+    osc1.stop();
+    pulseOsc2.stop();
+    osc2.stop();
+    noiseOsc.stop();
   };
 
 
@@ -367,10 +363,13 @@ function Inner() {
 
     switch (oscType) {
       case '1':
-        setonOff1(isSound);
+        setOnOff1(isSound);
         break;
       case '2':
-        setonOff2(isSound);
+        setOnOff2(isSound);
+        break;
+      case 'noise':
+        setOnOffNoise(isSound);
         break;
     }
   };
@@ -387,10 +386,14 @@ function Inner() {
       case '2':
         setWaveType2(keyValue);
         break;
+      case 'noise':
+        setWaveTypeNoise(keyValue);
+        break;
       }
   };
 
 
+  // パルス幅変更
   const changePulseWidth= (e: React.ChangeEvent<HTMLInputElement>): void => {
     const keyValue: number = Number(e.target.value);
     const oscType: string = e.target.dataset.osc;
@@ -403,6 +406,7 @@ function Inner() {
         break;
       }
   };
+
 
   // オクターブ変更
   const changeOctave = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -520,6 +524,28 @@ function Inner() {
                     </dl>
                   </section>
                 )}
+                <section id="noise" className="synth_section">
+                    <h3>Noise</h3>
+                    <div className="onOffButton">
+                      <label>
+                        <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} />On
+                      </label>
+                      <label>
+                        <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked />Off
+                      </label>
+                    </div>
+                    <hr />
+                    <dl>
+                      <dt>Wave</dt>
+                      <dd>
+                        {inner.noiseWaveTypes.map((waveType, waveIndex) =>
+                          <label key={waveIndex}>
+                            <input type="radio" name='waveTypeNoise' data-osc='noise' value={waveType} onChange={changeWaveType} defaultChecked={waveType === (waveTypeNoise) ? true : false} />{waveType}
+                          </label>
+                        )}
+                      </dd>
+                    </dl>
+                  </section>
               </TabPanel>
             </div>
           </Tabs>

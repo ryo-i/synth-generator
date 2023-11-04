@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- 波形のsquareをpulseにしてパルス幅を可変に [#3](https://github.com/ryo-i/synth-generator/issues/3)
+- ノイズオシレーターを追加 [#3](https://github.com/ryo-i/synth-generator/issues/3)
 
 ## 詳細（ブログ）
 
