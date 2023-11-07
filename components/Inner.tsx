@@ -196,11 +196,18 @@ function Inner() {
   const [coarse2, setCoarse2] = useState(0);
   const [fine1, setFine1] = useState(0);
   const [fine2, setFine2] = useState(0);
+  const [mixer1, setMixer1] = useState(0.5);
+  const [mixer2, setMixer2] = useState(0.5);
+  const [mixerNoise, setMixerNoise] = useState(0.5);
+  const [gain1, setGain1] = useState(null);
+  const [gain2, setGain2] = useState(null);
+  const [gainNoise, setGainNoise] = useState(null);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
     vcoId: ['1', '2'],
     onOffName: ['onOff1', 'onOff2'],
+    onOffValue: [onOff1, onOff2],
     waveTypeName: ['waveType1', 'waveType2'],
     waveTypeValue: [waveType1, waveType2],
     pulseWidthName: ['pulseWidth1', 'pulseWidth2'],
@@ -255,11 +262,18 @@ function Inner() {
   useEffect(() => {
     pushKeyButtons();
     document.querySelector('#key').scrollLeft = (keyWidth * 23);
-    setOsc1(new Tone.Oscillator().toDestination());
-    setOsc2(new Tone.Oscillator().toDestination());
-    setPulseOsc1(new Tone.PulseOscillator().toDestination());
-    setPulseOsc2(new Tone.PulseOscillator().toDestination());
-    setNoiseOsc(new Tone.Noise().toDestination());
+    setOsc1(new Tone.Oscillator());
+    setOsc2(new Tone.Oscillator());
+    setPulseOsc1(new Tone.PulseOscillator());
+    setPulseOsc2(new Tone.PulseOscillator());
+    setNoiseOsc(new Tone.Noise());
+
+    const mixerGain1 = new Tone.Gain(mixer1).toDestination();
+    const mixerGain2 = new Tone.Gain(mixer2).toDestination();
+    const mixerGainNoise = new Tone.Gain(mixerNoise).toDestination();
+    setGain1(mixerGain1);
+    setGain2(mixerGain2);
+    setGainNoise(mixerGainNoise);
   },[]);
 
 
@@ -316,6 +330,15 @@ function Inner() {
     const isValue2 = onOff2 && changeOctaveKey2 && changeCoarseKey2;
     const isPulse1 = waveType1 === 'pulse';
     const isPulse2 = waveType2 === 'pulse';
+
+    gain1.gain.value = mixer1;
+    gain2.gain.value = mixer2;
+    gainNoise.gain.value = mixerNoise;
+    osc1.connect(gain1);
+    pulseOsc1.connect(gain1);
+    osc2.connect(gain2);
+    pulseOsc2.connect(gain2);
+    noiseOsc.connect(gainNoise);
 
     if (isValue1 && isPulse1) {
       pulseOsc1.width.value = pulseWidth1;
@@ -453,6 +476,25 @@ function Inner() {
   };
 
 
+  // ミキサー変更
+  const changeMixer = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    const oscType: string = e.target.dataset.osc;
+
+    switch (oscType) {
+      case '1':
+        setMixer1(keyValue);
+        break;
+      case '2':
+        setMixer2(keyValue);
+        break;
+      case 'noise':
+        setMixerNoise(keyValue);
+        break;
+    }
+  };
+
+
   // JSX
   return (
     <>
@@ -479,6 +521,7 @@ function Inner() {
             <nav  id="synth_menu">
               <TabList>
                   <Tab>VCO</Tab>
+                  <Tab>MIXER</Tab>
               </TabList>
             </nav>
             <div id="synth_pannels">
@@ -488,10 +531,10 @@ function Inner() {
                     <h3>{vcoData.vcoName[index]}</h3>
                     <div className="onOffButton">
                       <label>
-                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="on" onChange={changeSound} />On
+                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="on" onChange={changeSound} defaultChecked={vcoData.onOffValue[index] ? true : false} />On
                       </label>
                       <label>
-                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="off" onChange={changeSound} defaultChecked />Off
+                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="off" onChange={changeSound} defaultChecked={!vcoData.onOffValue[index] ? true : false} />Off
                       </label>
                     </div>
                     <hr />
@@ -528,10 +571,10 @@ function Inner() {
                     <h3>Noise</h3>
                     <div className="onOffButton">
                       <label>
-                        <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} />On
+                        <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} defaultChecked={onOffNoise ? true : false} />On
                       </label>
                       <label>
-                        <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked />Off
+                        <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked={!onOffNoise ? true : false} />Off
                       </label>
                     </div>
                     <hr />
@@ -543,6 +586,25 @@ function Inner() {
                             <input type="radio" name='waveTypeNoise' data-osc='noise' value={waveType} onChange={changeWaveType} defaultChecked={waveType === (waveTypeNoise) ? true : false} />{waveType}
                           </label>
                         )}
+                      </dd>
+                    </dl>
+                  </section>
+              </TabPanel>
+              <TabPanel>
+                <section id="mix" className="synth_section">
+                    <h3>MIXER</h3>
+                    <dl>
+                      <dt>VCO 1: {mixer1}</dt>
+                      <dd>
+                      <input type="range" name="mixer1" data-osc="1" value={mixer1} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                      </dd>
+                      <dt>VOC 2: {mixer2}</dt>
+                      <dd>
+                      <input type="range" name="mixer2" data-osc="2" value={mixer2} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                      </dd>
+                      <dt>Noise: {mixerNoise}</dt>
+                      <dd>
+                      <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
                       </dd>
                     </dl>
                   </section>
