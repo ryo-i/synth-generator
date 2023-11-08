@@ -202,6 +202,7 @@ function Inner() {
   const [gain1, setGain1] = useState(null);
   const [gain2, setGain2] = useState(null);
   const [gainNoise, setGainNoise] = useState(null);
+  const [gainMaster, setGainMaster] = useState(null);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
@@ -268,12 +269,14 @@ function Inner() {
     setPulseOsc2(new Tone.PulseOscillator());
     setNoiseOsc(new Tone.Noise());
 
-    const mixerGain1 = new Tone.Gain(mixer1).toDestination();
-    const mixerGain2 = new Tone.Gain(mixer2).toDestination();
-    const mixerGainNoise = new Tone.Gain(mixerNoise).toDestination();
+    const mixerGain1 = new Tone.Gain(mixer1);
+    const mixerGain2 = new Tone.Gain(mixer2);
+    const mixerGainNoise = new Tone.Gain(mixerNoise);
+    const mixerGainMaster = new Tone.Gain(10);
     setGain1(mixerGain1);
     setGain2(mixerGain2);
     setGainNoise(mixerGainNoise);
+    setGainMaster(mixerGainMaster);
   },[]);
 
 
@@ -339,6 +342,10 @@ function Inner() {
     osc2.connect(gain2);
     pulseOsc2.connect(gain2);
     noiseOsc.connect(gainNoise);
+    gain1.connect(gainMaster);
+    gain2.connect(gainMaster);
+    gainNoise.connect(gainMaster);
+    gainMaster.toDestination(); // 最終出力
 
     if (isValue1 && isPulse1) {
       pulseOsc1.width.value = pulseWidth1;
