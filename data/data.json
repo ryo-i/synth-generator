@@ -38,7 +38,10 @@
       },
       "vcoName": ["vco1", "vco2"],
       "waveTypes": ["sine", "triangle", "sawtooth", "pulse"],
-      "noiseWaveTypes": ["white", "brown", "pink"]
+      "noiseWaveTypes": ["white", "brown", "pink"],
+      "filterTypes": ["lowpass", "highpass", "bandpass",
+			"lowshelf", "highshelf", "notch", "allpass", "peaking"],
+      "rollOff": [-12, -24, -48, -96]
     },
     "footer": {
         "text": "©️ イイダリョウ"

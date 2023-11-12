@@ -203,6 +203,11 @@ function Inner() {
   const [gain2, setGain2] = useState(null);
   const [gainNoise, setGainNoise] = useState(null);
   const [gainMaster, setGainMaster] = useState(null);
+  const [filter, setFilter] = useState(null);
+  const [filterType, setFilterType] = useState('lowpass');
+  const [cutOff, setCutOff] = useState(20000);
+  const [resonance, setResonance] = useState(0);
+  const [rollOff, setRollOff] = useState(-12);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
@@ -277,6 +282,8 @@ function Inner() {
     setGain2(mixerGain2);
     setGainNoise(mixerGainNoise);
     setGainMaster(mixerGainMaster);
+
+    setFilter(new Tone.Filter());
   },[]);
 
 
@@ -323,6 +330,8 @@ function Inner() {
   const keyAttack = (e) => {
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
     const keyValue: string = eventTarget.value;
+
+    // VCO
     const changeOctaveKey1 = getOctaveKey(keyValue, octave1);
     const changeCoarseKey1 = getCoarseKey(changeOctaveKey1, coarse1);
     const changeFineValue1 = getFineValue(changeCoarseKey1, fine1);
@@ -345,7 +354,7 @@ function Inner() {
     gain1.connect(gainMaster);
     gain2.connect(gainMaster);
     gainNoise.connect(gainMaster);
-    gainMaster.toDestination(); // 最終出力
+    gainMaster.connect(filter);
 
     if (isValue1 && isPulse1) {
       pulseOsc1.width.value = pulseWidth1;
@@ -371,6 +380,13 @@ function Inner() {
       noiseOsc.type = waveTypeNoise;
       noiseOsc.start();
     }
+
+    // VCF
+    filter.type = filterType;
+    filter.frequency.value = cutOff;
+    filter.Q.value = resonance;
+    filter.rolloff = rollOff;
+    filter.toDestination(); // 最終出力
   };
 
 
@@ -502,6 +518,34 @@ function Inner() {
   };
 
 
+  // フィルター変更
+  const changeFilterType = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: string = String(e.target.value);
+    setFilterType(keyValue);
+  };
+
+
+  // カットオフ変更
+  const changeCutOff = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    setCutOff(keyValue);
+  };
+
+
+  // レゾナンス変更
+  const changeResonance = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    setResonance(keyValue);
+  };
+
+
+  // ロールオフ変更
+  const changeRollOff = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    setRollOff(keyValue);
+  };
+
+
   // JSX
   return (
     <>
@@ -529,6 +573,7 @@ function Inner() {
               <TabList>
                   <Tab>VCO</Tab>
                   <Tab>MIXER</Tab>
+                  <Tab>VCF</Tab>
               </TabList>
             </nav>
             <div id="synth_pannels">
@@ -546,7 +591,7 @@ function Inner() {
                     </div>
                     <hr />
                     <dl>
-                      <dt>Wave</dt>
+                      <dt>Wave: {vcoData.waveTypeValue[index]}</dt>
                       <dd>
                         {inner.waveTypes.map((waveType, waveIndex) =>
                           <label key={waveIndex}>
@@ -586,11 +631,11 @@ function Inner() {
                     </div>
                     <hr />
                     <dl>
-                      <dt>Wave</dt>
+                      <dt>Wave: {waveTypeNoise}</dt>
                       <dd>
-                        {inner.noiseWaveTypes.map((waveType, waveIndex) =>
-                          <label key={waveIndex}>
-                            <input type="radio" name='waveTypeNoise' data-osc='noise' value={waveType} onChange={changeWaveType} defaultChecked={waveType === (waveTypeNoise) ? true : false} />{waveType}
+                        {inner.noiseWaveTypes.map((type, index) =>
+                          <label key={index}>
+                            <input type="radio" name='waveTypeNoise' data-osc='noise' value={type} onChange={changeWaveType} defaultChecked={type === (waveTypeNoise) ? true : false} />{type}
                           </label>
                         )}
                       </dd>
@@ -612,6 +657,40 @@ function Inner() {
                       <dt>Noise: {mixerNoise}</dt>
                       <dd>
                       <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                      </dd>
+                    </dl>
+                  </section>
+              </TabPanel>
+              <TabPanel>
+                <section id="mix" className="synth_section">
+                    <h3>VCF</h3>
+                    <dl>
+                      <dt>Filter: {filterType}</dt>
+                      <dd>
+                        {inner.filterTypes.map((type, index) =>
+                          <label key={index}>
+                            <input type="radio" name='filterType' data-osc='filter' value={type} onChange={changeFilterType} defaultChecked={type === (filterType) ? true : false} />{type}
+                          </label>
+                        )}
+                      </dd>
+                      <hr />
+                      <dt>Frequency (cut off): {cutOff}</dt>
+                      <dd>
+                      <input type="range" name="cutOff" data-osc="1" value={cutOff} onChange={changeCutOff}  min="20" max="20000" step="1" />
+                      </dd>
+                      <hr />
+                      <dt>Q (Resonance): {resonance}</dt>
+                      <dd>
+                      <input type="range" name="resonance" data-osc="1" value={resonance} onChange={changeResonance}  min="0" max="10" step="0.1" />
+                      </dd>
+                      <hr />
+                      <dt>Roll off: {rollOff}</dt>
+                      <dd>
+                      {inner.rollOff.map((type, index) =>
+                          <label key={index}>
+                            <input type="radio" name='rollOff' data-osc='rollOff' value={type} onChange={changeRollOff} defaultChecked={type === (rollOff) ? true : false} />{type}
+                          </label>
+                        )}
                       </dd>
                     </dl>
                   </section>
