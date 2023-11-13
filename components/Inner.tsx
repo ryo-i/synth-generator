@@ -138,6 +138,7 @@ const ScalePlayer = styled.div`
         margin: 0;
         display: inline-block;
         font-size: 12px;
+        width: 100%;
         label {
           margin: 0 10px 7px 0;
           display: inline-block;
@@ -674,7 +675,7 @@ function Inner() {
                         )}
                       </dd>
                       <hr />
-                      <dt>Frequency (cut off): {cutOff}</dt>
+                      <dt>Frequency (cut off): {cutOff}Hz</dt>
                       <dd>
                       <input type="range" name="cutOff" data-osc="1" value={cutOff} onChange={changeCutOff}  min="20" max="20000" step="1" />
                       </dd>
@@ -684,7 +685,7 @@ function Inner() {
                       <input type="range" name="resonance" data-osc="1" value={resonance} onChange={changeResonance}  min="0" max="10" step="0.1" />
                       </dd>
                       <hr />
-                      <dt>Roll off: {rollOff}</dt>
+                      <dt>Roll off: {rollOff}dB/oct</dt>
                       <dd>
                       {inner.rollOff.map((type, index) =>
                           <label key={index}>
