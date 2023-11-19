@@ -209,6 +209,8 @@ function Inner() {
   const [cutOff, setCutOff] = useState(20000);
   const [resonance, setResonance] = useState(0);
   const [rollOff, setRollOff] = useState(-12);
+  const [amplifier, setAmplifier] = useState(null);
+  const [volume, setVolume] = useState(1);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
@@ -278,13 +280,14 @@ function Inner() {
     const mixerGain1 = new Tone.Gain(mixer1);
     const mixerGain2 = new Tone.Gain(mixer2);
     const mixerGainNoise = new Tone.Gain(mixerNoise);
-    const mixerGainMaster = new Tone.Gain(10);
+    const mixerGainMaster = new Tone.Gain(1);
     setGain1(mixerGain1);
     setGain2(mixerGain2);
     setGainNoise(mixerGainNoise);
     setGainMaster(mixerGainMaster);
 
     setFilter(new Tone.Filter());
+    setAmplifier(new Tone.Gain(1).toDestination()); // 最終出力
   },[]);
 
 
@@ -387,7 +390,10 @@ function Inner() {
     filter.frequency.value = cutOff;
     filter.Q.value = resonance;
     filter.rolloff = rollOff;
-    filter.toDestination(); // 最終出力
+    filter.connect(amplifier);
+
+    // VCA
+    amplifier.gain.value = volume;
   };
 
 
@@ -401,6 +407,7 @@ function Inner() {
   };
 
 
+  // VCO設定
   // On/Off変更
   const changeSound = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const keyValue: string = e.target.value;
@@ -500,7 +507,7 @@ function Inner() {
   };
 
 
-  // ミキサー変更
+  // MIXER設定
   const changeMixer = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const keyValue: number = Number(e.target.value);
     const oscType: string = e.target.dataset.osc;
@@ -519,31 +526,38 @@ function Inner() {
   };
 
 
-  // フィルター変更
-  const changeFilterType = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  // VCF設定
+  const changeFilter = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const keyValue: string = String(e.target.value);
-    setFilterType(keyValue);
+    const keyName: string = e.target.name;
+
+    switch (keyName) {
+      case 'filterType':
+        setFilterType(keyValue);
+        break;
+      case 'cutOff':
+        setCutOff(Number(keyValue));
+        break;
+      case 'resonance':
+        setResonance(Number(keyValue));
+        break;
+      case 'rollOff':
+        setRollOff(Number(keyValue));
+        break;
+    }
   };
 
 
-  // カットオフ変更
-  const changeCutOff = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  // VCO設定
+  const changeVolume = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const keyValue: number = Number(e.target.value);
-    setCutOff(keyValue);
-  };
+    const keyName: string = e.target.name;
 
-
-  // レゾナンス変更
-  const changeResonance = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const keyValue: number = Number(e.target.value);
-    setResonance(keyValue);
-  };
-
-
-  // ロールオフ変更
-  const changeRollOff = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const keyValue: number = Number(e.target.value);
-    setRollOff(keyValue);
+    switch (keyName) {
+      case 'volume':
+        setVolume(keyValue);
+        break;
+    }
   };
 
 
@@ -575,6 +589,7 @@ function Inner() {
                   <Tab>VCO</Tab>
                   <Tab>MIXER</Tab>
                   <Tab>VCF</Tab>
+                  <Tab>VCA</Tab>
               </TabList>
             </nav>
             <div id="synth_pannels">
@@ -670,28 +685,39 @@ function Inner() {
                       <dd>
                         {inner.filterTypes.map((type, index) =>
                           <label key={index}>
-                            <input type="radio" name='filterType' data-osc='filter' value={type} onChange={changeFilterType} defaultChecked={type === (filterType) ? true : false} />{type}
+                            <input type="radio" name='filterType' value={type} onChange={changeFilter} defaultChecked={type === (filterType) ? true : false} />{type}
                           </label>
                         )}
                       </dd>
                       <hr />
                       <dt>Frequency (cut off): {cutOff}Hz</dt>
                       <dd>
-                      <input type="range" name="cutOff" data-osc="1" value={cutOff} onChange={changeCutOff}  min="20" max="20000" step="1" />
+                      <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="20000" step="1" />
                       </dd>
                       <hr />
                       <dt>Q (Resonance): {resonance}</dt>
                       <dd>
-                      <input type="range" name="resonance" data-osc="1" value={resonance} onChange={changeResonance}  min="0" max="10" step="0.1" />
+                      <input type="range" name="resonance" value={resonance} onChange={changeFilter}  min="0" max="10" step="0.1" />
                       </dd>
                       <hr />
                       <dt>Roll off: {rollOff}dB/oct</dt>
                       <dd>
                       {inner.rollOff.map((type, index) =>
                           <label key={index}>
-                            <input type="radio" name='rollOff' data-osc='rollOff' value={type} onChange={changeRollOff} defaultChecked={type === (rollOff) ? true : false} />{type}
+                            <input type="radio" name='rollOff' value={type} onChange={changeFilter} defaultChecked={type === (rollOff) ? true : false} />{type}
                           </label>
                         )}
+                      </dd>
+                    </dl>
+                  </section>
+              </TabPanel>
+              <TabPanel>
+                <section id="mix" className="synth_section">
+                    <h3>VCA</h3>
+                    <dl>
+                      <dt>Volume: {volume}</dt>
+                      <dd>
+                      <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
                       </dd>
                     </dl>
                   </section>

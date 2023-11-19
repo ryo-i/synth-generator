@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- VCFを追加 [#3](https://github.com/ryo-i/synth-generator/issues/4)
+- VCF設定一元化 & VCA設定  [#4](https://github.com/ryo-i/synth-generator/issues/4)
 
 ## 詳細（ブログ）
 
