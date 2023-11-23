@@ -174,6 +174,33 @@ const ScalePlayer = styled.div`
 
 
 // Component
+function Eg (props) {
+  return (
+    <section id="vca" className="synth_section">
+      <h3>EG</h3>
+      <dl>
+        <dt>Attack: {props.attack}</dt>
+        <dd>
+        <input type="range" data-type={props.type} name="attack" value={props.attack} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+        </dd>
+        <dt>Decay: {props.decay}</dt>
+        <dd>
+        <input type="range" data-type={props.type} name="decay" value={props.decay} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+        </dd>
+        <dt>Sustain: {props.sustain}</dt>
+        <dd>
+        <input type="range" data-type={props.type} name="sustain" value={props.sustain} onChange={props.changeEg}  min="0" max="1" step="0.01" />
+        </dd>
+        <dt>Release: {props.release}</dt>
+        <dd>
+        <input type="range" data-type={props.type} name="release" value={props.release} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+        </dd>
+      </dl>
+    </section>
+  );
+}
+
+
 function Inner() {
   // Hooks
   const keyElement = useRef<HTMLInputElement>(null);
@@ -211,6 +238,21 @@ function Inner() {
   const [rollOff, setRollOff] = useState(-12);
   const [amplifier, setAmplifier] = useState(null);
   const [volume, setVolume] = useState(1);
+  const [eg1, setEg1] = useState(null);
+  const [attack1, setAttack1] = useState(0.01);
+  const [decay1, setDecay1] = useState(0.01);
+  const [sustain1, setSustain1] = useState(1);
+  const [release1, setRelease1] = useState(0.01);
+  const [eg2, setEg2] = useState(null);
+  const [attack2, setAttack2] = useState(0.01);
+  const [decay2, setDecay2] = useState(0.01);
+  const [sustain2, setSustain2] = useState(1);
+  const [release2, setRelease2] = useState(0.01);
+  const [eg3, setEg3] = useState(null);
+  const [attack3, setAttack3] = useState(0.01);
+  const [decay3, setDecay3] = useState(0.01);
+  const [sustain3, setSustain3] = useState(1);
+  const [release3, setRelease3] = useState(0.01);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
@@ -287,7 +329,17 @@ function Inner() {
     setGainMaster(mixerGainMaster);
 
     setFilter(new Tone.Filter());
-    setAmplifier(new Tone.Gain(1).toDestination()); // 最終出力
+    setAmplifier(new Tone.Gain(1));
+
+    const egInit = new Tone.AmplitudeEnvelope({
+      attack: 0.01,
+      decay: 0.01,
+      sustain: 1,
+      release: 0.01,
+    });
+    setEg1(egInit);
+    setEg2(egInit);
+    setEg3(egInit);
   },[]);
 
 
@@ -332,6 +384,12 @@ function Inner() {
 
   // 鍵盤を押したら音を鳴らす
   const keyAttack = (e) => {
+    pulseOsc1.stop();
+    osc1.stop();
+    pulseOsc2.stop();
+    osc2.stop();
+    noiseOsc.stop();
+
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
     const keyValue: string = eventTarget.value;
 
@@ -394,16 +452,20 @@ function Inner() {
 
     // VCA
     amplifier.gain.value = volume;
+    amplifier.connect(eg3);
+
+    eg3.attack = attack3;
+    eg3.decay = decay3;
+    eg3.sustain = sustain3;
+    eg3.release = release3;
+    eg3.toDestination();
+    eg3.triggerAttack();
   };
 
 
   // 鍵盤を押したら音を止める
   const keyRelease = () => {
-    pulseOsc1.stop();
-    osc1.stop();
-    pulseOsc2.stop();
-    osc2.stop();
-    noiseOsc.stop();
+    eg3.triggerRelease();
   };
 
 
@@ -561,6 +623,40 @@ function Inner() {
   };
 
 
+  // EG設定
+  const changeEg = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    const keyName: string = e.target.name;
+    const keyType: string = e.target.dataset.type;
+    const isVco = keyType === 'vco';
+    const isVcf = keyType === 'vcf';
+    const isVca = keyType === 'vca';
+
+    switch (keyName) {
+      case 'attack':
+        if (isVco) setAttack1(keyValue);
+        else if (isVcf) setAttack2(keyValue);
+        else if (isVca) setAttack3(keyValue);
+        break;
+      case 'decay':
+        if (isVco) setDecay1(keyValue);
+        else if (isVcf) setDecay2(keyValue);
+        else if (isVca) setDecay3(keyValue);
+        break;
+      case 'sustain':
+        if (isVco) setSustain1(keyValue);
+        else if (isVcf) setSustain2(keyValue);
+        else if (isVca) setSustain3(keyValue);
+        break;
+      case 'release':
+        if (isVco) setRelease1(keyValue);
+        else if (isVcf) setRelease2(keyValue);
+        else if (isVca) setRelease3(keyValue);
+        break;
+    }
+  };
+
+
   // JSX
   return (
     <>
@@ -636,30 +732,30 @@ function Inner() {
                   </section>
                 )}
                 <section id="noise" className="synth_section">
-                    <h3>Noise</h3>
-                    <div className="onOffButton">
-                      <label>
-                        <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} defaultChecked={onOffNoise ? true : false} />On
-                      </label>
-                      <label>
-                        <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked={!onOffNoise ? true : false} />Off
-                      </label>
-                    </div>
-                    <hr />
-                    <dl>
-                      <dt>Wave: {waveTypeNoise}</dt>
-                      <dd>
-                        {inner.noiseWaveTypes.map((type, index) =>
-                          <label key={index}>
-                            <input type="radio" name='waveTypeNoise' data-osc='noise' value={type} onChange={changeWaveType} defaultChecked={type === (waveTypeNoise) ? true : false} />{type}
-                          </label>
-                        )}
-                      </dd>
-                    </dl>
-                  </section>
+                  <h3>Noise</h3>
+                  <div className="onOffButton">
+                    <label>
+                      <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} defaultChecked={onOffNoise ? true : false} />On
+                    </label>
+                    <label>
+                      <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked={!onOffNoise ? true : false} />Off
+                    </label>
+                  </div>
+                  <hr />
+                  <dl>
+                    <dt>Wave: {waveTypeNoise}</dt>
+                    <dd>
+                      {inner.noiseWaveTypes.map((type, index) =>
+                        <label key={index}>
+                          <input type="radio" name='waveTypeNoise' data-osc='noise' value={type} onChange={changeWaveType} defaultChecked={type === (waveTypeNoise) ? true : false} />{type}
+                        </label>
+                      )}
+                    </dd>
+                  </dl>
+                </section>
               </TabPanel>
               <TabPanel>
-                <section id="mix" className="synth_section">
+                <section id="mixer" className="synth_section">
                     <h3>MIXER</h3>
                     <dl>
                       <dt>VCO 1: {mixer1}</dt>
@@ -678,49 +774,50 @@ function Inner() {
                   </section>
               </TabPanel>
               <TabPanel>
-                <section id="mix" className="synth_section">
-                    <h3>VCF</h3>
-                    <dl>
-                      <dt>Filter: {filterType}</dt>
-                      <dd>
-                        {inner.filterTypes.map((type, index) =>
-                          <label key={index}>
-                            <input type="radio" name='filterType' value={type} onChange={changeFilter} defaultChecked={type === (filterType) ? true : false} />{type}
-                          </label>
-                        )}
-                      </dd>
-                      <hr />
-                      <dt>Frequency (cut off): {cutOff}Hz</dt>
-                      <dd>
-                      <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="20000" step="1" />
-                      </dd>
-                      <hr />
-                      <dt>Q (Resonance): {resonance}</dt>
-                      <dd>
-                      <input type="range" name="resonance" value={resonance} onChange={changeFilter}  min="0" max="10" step="0.1" />
-                      </dd>
-                      <hr />
-                      <dt>Roll off: {rollOff}dB/oct</dt>
-                      <dd>
-                      {inner.rollOff.map((type, index) =>
-                          <label key={index}>
-                            <input type="radio" name='rollOff' value={type} onChange={changeFilter} defaultChecked={type === (rollOff) ? true : false} />{type}
-                          </label>
-                        )}
-                      </dd>
-                    </dl>
-                  </section>
+                <section id="vcf" className="synth_section">
+                  <h3>VCF</h3>
+                  <dl>
+                    <dt>Filter: {filterType}</dt>
+                    <dd>
+                      {inner.filterTypes.map((type, index) =>
+                        <label key={index}>
+                          <input type="radio" name='filterType' value={type} onChange={changeFilter} defaultChecked={type === (filterType) ? true : false} />{type}
+                        </label>
+                      )}
+                    </dd>
+                    <hr />
+                    <dt>Frequency (cut off): {cutOff}Hz</dt>
+                    <dd>
+                    <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="20000" step="1" />
+                    </dd>
+                    <hr />
+                    <dt>Q (Resonance): {resonance}</dt>
+                    <dd>
+                    <input type="range" name="resonance" value={resonance} onChange={changeFilter}  min="0" max="10" step="0.1" />
+                    </dd>
+                    <hr />
+                    <dt>Roll off: {rollOff}dB/oct</dt>
+                    <dd>
+                    {inner.rollOff.map((type, index) =>
+                        <label key={index}>
+                          <input type="radio" name='rollOff' value={type} onChange={changeFilter} defaultChecked={type === (rollOff) ? true : false} />{type}
+                        </label>
+                      )}
+                    </dd>
+                  </dl>
+                </section>
               </TabPanel>
               <TabPanel>
-                <section id="mix" className="synth_section">
-                    <h3>VCA</h3>
-                    <dl>
-                      <dt>Volume: {volume}</dt>
-                      <dd>
-                      <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
-                      </dd>
-                    </dl>
-                  </section>
+                <section id="vca" className="synth_section">
+                  <h3>VCA</h3>
+                  <dl>
+                    <dt>Volume: {volume}</dt>
+                    <dd>
+                    <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
+                    </dd>
+                  </dl>
+                </section>
+                <Eg type="vca" attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} />
               </TabPanel>
             </div>
           </Tabs>
