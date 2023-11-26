@@ -39,6 +39,7 @@
       "vcoName": ["vco1", "vco2"],
       "waveTypes": ["sine", "triangle", "sawtooth", "pulse"],
       "noiseWaveTypes": ["white", "brown", "pink"],
+      "lfoWaveTypes": ["sine", "triangle", "sawtooth", "square"],
       "filterTypes": ["lowpass", "highpass", "bandpass",
 			"lowshelf", "highshelf", "notch", "allpass", "peaking"],
       "rollOff": [-12, -24, -48, -96]

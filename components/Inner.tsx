@@ -181,19 +181,52 @@ function Eg (props) {
       <dl>
         <dt>Attack: {props.attack}</dt>
         <dd>
-        <input type="range" data-type={props.type} name="attack" value={props.attack} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+          <input type="range" data-type={props.type} name="attack" value={props.attack} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
         </dd>
         <dt>Decay: {props.decay}</dt>
         <dd>
-        <input type="range" data-type={props.type} name="decay" value={props.decay} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+          <input type="range" data-type={props.type} name="decay" value={props.decay} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
         </dd>
         <dt>Sustain: {props.sustain}</dt>
         <dd>
-        <input type="range" data-type={props.type} name="sustain" value={props.sustain} onChange={props.changeEg}  min="0" max="1" step="0.01" />
+          <input type="range" data-type={props.type} name="sustain" value={props.sustain} onChange={props.changeEg}  min="0" max="1" step="0.01" />
         </dd>
         <dt>Release: {props.release}</dt>
         <dd>
-        <input type="range" data-type={props.type} name="release" value={props.release} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+          <input type="range" data-type={props.type} name="release" value={props.release} onChange={props.changeEg}  min="0.01" max="10" step="0.01" />
+        </dd>
+      </dl>
+    </section>
+  );
+}
+
+
+function Lfo (props) {
+  return (
+    <section id="lfo" className="synth_section">
+      <h3>LFO</h3>
+      <dl>
+        <dt>Wave: {props.waveTypeLfo}</dt>
+        <dd>
+          {inner.lfoWaveTypes.map((waveType, index) =>
+            <label key={index}>
+              <input type="radio" data-type={props.type}  data-osc="lfo"  name="waveTypeLfo" value={waveType} onChange={props.changeWaveType} defaultChecked={waveType === (props.waveTypeLfo) ? true : false} />{waveType}
+            </label>
+          )}
+        </dd>
+        <hr />
+        <dt>Frequency: {props.frequencyLfo}</dt>
+        <dd>
+          <input type="range" data-type={props.type} name="frequencyLfo" value={props.frequencyLfo} onChange={props.changeLfo}  min="0.01" max="10" step="0.01" />
+        </dd>
+        <hr />
+        <dt>Min: {props.minLfo}</dt>
+        <dd>
+          <input type="range" data-type={props.type} name="minLfo" value={props.minLfo} onChange={props.changeLfo}  min="0" max="1" step="0.01" />
+        </dd>
+        <dt>Max: {props.maxLfo}</dt>
+        <dd>
+          <input type="range" data-type={props.type} name="maxLfo" value={props.maxLfo} onChange={props.changeLfo}  min="0.01" max="10" step="0.01" />
         </dd>
       </dl>
     </section>
@@ -253,6 +286,24 @@ function Inner() {
   const [decay3, setDecay3] = useState(0.01);
   const [sustain3, setSustain3] = useState(1);
   const [release3, setRelease3] = useState(0.01);
+  const [lfo1, setLfo1] = useState(null);
+  const [waveTypeLfo1, setWaveTypeLfo1] = useState('sine');
+  const [pulseWidthLfo1, setPulseWidthLfo1] = useState(0);
+  const [frequencyLfo1, setFrequencyLfo1] = useState(0.01);
+  const [minLfo1, setMinLfo1] = useState(0);
+  const [maxLfo1, setMaxLfo1] = useState(0);
+  const [lfo2, setLfo2] = useState(null);
+  const [waveTypeLfo2, setWaveTypeLfo2] = useState('sine');
+  const [pulseWidthLfo2, setPulseWidthLfo2] = useState(0);
+  const [frequencyLfo2, setFrequencyLfo2] = useState(0.01);
+  const [minLfo2, setMinLfo2] = useState(0);
+  const [maxLfo2, setMaxLfo2] = useState(0);
+  const [lfo3, setLfo3] = useState(null);
+  const [waveTypeLfo3, setWaveTypeLfo3] = useState('sine');
+  const [pulseWidthLfo3, setPulseWidthLfo3] = useState(0);
+  const [frequencyLfo3, setFrequencyLfo3] = useState(0.01);
+  const [minLfo3, setMinLfo3] = useState(0);
+  const [maxLfo3, setMaxLfo3] = useState(0);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
@@ -340,6 +391,10 @@ function Inner() {
     setEg1(egInit);
     setEg2(egInit);
     setEg3(egInit);
+
+    setLfo1(new Tone.LFO());
+    setLfo2(new Tone.LFO());
+    setLfo3(new Tone.LFO());
   },[]);
 
 
@@ -389,6 +444,7 @@ function Inner() {
     pulseOsc2.stop();
     osc2.stop();
     noiseOsc.stop();
+    lfo3.stop();
 
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
     const keyValue: string = eventTarget.value;
@@ -448,18 +504,25 @@ function Inner() {
     filter.frequency.value = cutOff;
     filter.Q.value = resonance;
     filter.rolloff = rollOff;
-    filter.connect(amplifier);
+    filter.connect(eg3);
 
     // VCA
-    amplifier.gain.value = volume;
-    amplifier.connect(eg3);
-
     eg3.attack = attack3;
     eg3.decay = decay3;
     eg3.sustain = sustain3;
     eg3.release = release3;
-    eg3.toDestination();
     eg3.triggerAttack();
+    eg3.connect(amplifier);
+
+    lfo3.type = waveTypeLfo3;
+    lfo3.frequency.value = frequencyLfo3;
+    lfo3.min = minLfo3;
+    lfo3.max = maxLfo3;
+    lfo3.start();
+    lfo3.connect(amplifier.gain);
+
+    amplifier.gain.value = volume;
+    amplifier.toDestination();
   };
 
 
@@ -495,6 +558,11 @@ function Inner() {
   const changeWaveType = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const keyValue: string = e.target.value;
     const oscType: string = e.target.dataset.osc;
+    const keyType: string = e.target.dataset.type;
+    const isVco = keyType === 'vco';
+    const isVcf = keyType === 'vcf';
+    const isVca = keyType === 'vca';
+
     switch (oscType) {
       case '1':
         setWaveType1(keyValue);
@@ -504,6 +572,11 @@ function Inner() {
         break;
       case 'noise':
         setWaveTypeNoise(keyValue);
+        break;
+      case 'lfo':
+        if (isVco) setWaveTypeLfo1(keyValue);
+        else if (isVcf) setWaveTypeLfo2(keyValue);
+        else if (isVca) setWaveTypeLfo3(keyValue);
         break;
       }
   };
@@ -657,6 +730,35 @@ function Inner() {
   };
 
 
+  // LFO設定
+  const changeLfo = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    const keyName: string = e.target.name;
+    const keyType: string = e.target.dataset.type;
+    const isVco = keyType === 'vco';
+    const isVcf = keyType === 'vcf';
+    const isVca = keyType === 'vca';
+
+    switch (keyName) {
+      case 'frequencyLfo':
+        if (isVco) setFrequencyLfo1(keyValue);
+        else if (isVcf) setFrequencyLfo2(keyValue);
+        else if (isVca) setFrequencyLfo3(keyValue);
+        break;
+      case 'minLfo':
+        if (isVco) setMinLfo1(keyValue);
+        else if (isVcf) setMinLfo2(keyValue);
+        else if (isVca) setMinLfo3(keyValue);
+        break;
+      case 'maxLfo':
+        if (isVco) setMaxLfo1(keyValue);
+        else if (isVcf) setMaxLfo2(keyValue);
+        else if (isVca) setMaxLfo3(keyValue);
+        break;
+    }
+  };
+
+
   // JSX
   return (
     <>
@@ -760,15 +862,15 @@ function Inner() {
                     <dl>
                       <dt>VCO 1: {mixer1}</dt>
                       <dd>
-                      <input type="range" name="mixer1" data-osc="1" value={mixer1} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                        <input type="range" name="mixer1" data-osc="1" value={mixer1} onChange={changeMixer}  min="0" max="1" step="0.01" />
                       </dd>
                       <dt>VOC 2: {mixer2}</dt>
                       <dd>
-                      <input type="range" name="mixer2" data-osc="2" value={mixer2} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                        <input type="range" name="mixer2" data-osc="2" value={mixer2} onChange={changeMixer}  min="0" max="1" step="0.01" />
                       </dd>
                       <dt>Noise: {mixerNoise}</dt>
                       <dd>
-                      <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                        <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
                       </dd>
                     </dl>
                   </section>
@@ -788,21 +890,21 @@ function Inner() {
                     <hr />
                     <dt>Frequency (cut off): {cutOff}Hz</dt>
                     <dd>
-                    <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="20000" step="1" />
+                      <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="20000" step="1" />
                     </dd>
                     <hr />
                     <dt>Q (Resonance): {resonance}</dt>
                     <dd>
-                    <input type="range" name="resonance" value={resonance} onChange={changeFilter}  min="0" max="10" step="0.1" />
+                      <input type="range" name="resonance" value={resonance} onChange={changeFilter}  min="0" max="10" step="0.1" />
                     </dd>
                     <hr />
                     <dt>Roll off: {rollOff}dB/oct</dt>
                     <dd>
-                    {inner.rollOff.map((type, index) =>
-                        <label key={index}>
-                          <input type="radio" name='rollOff' value={type} onChange={changeFilter} defaultChecked={type === (rollOff) ? true : false} />{type}
-                        </label>
-                      )}
+                      {inner.rollOff.map((type, index) =>
+                          <label key={index}>
+                            <input type="radio" name='rollOff' value={type} onChange={changeFilter} defaultChecked={type === (rollOff) ? true : false} />{type}
+                          </label>
+                        )}
                     </dd>
                   </dl>
                 </section>
@@ -813,11 +915,12 @@ function Inner() {
                   <dl>
                     <dt>Volume: {volume}</dt>
                     <dd>
-                    <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
+                      <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
                     </dd>
                   </dl>
                 </section>
                 <Eg type="vca" attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} />
+                <Lfo type="vca" waveTypeLfo={waveTypeLfo3} frequencyLfo={frequencyLfo3} minLfo={minLfo3} maxLfo={maxLfo3} changeLfo={changeLfo} changeWaveType={changeWaveType} />
               </TabPanel>
             </div>
           </Tabs>

@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- VCAにEGを適用  [#4](https://github.com/ryo-i/synth-generator/issues/5)
+- VCAにLFOも適用  [#5](https://github.com/ryo-i/synth-generator/issues/5)
 
 ## 詳細（ブログ）
 
