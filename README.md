@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- VCAにEGとLFOのアマウント設定を追加  [#5](https://github.com/ryo-i/synth-generator/issues/5)
+- volume設定を修正  [#5](https://github.com/ryo-i/synth-generator/issues/5)
 
 ## 詳細（ブログ）
 

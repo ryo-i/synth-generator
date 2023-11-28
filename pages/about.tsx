@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>VCAにEGとLFOのアマウント設定を追加 <a href="https://github.com/ryo-i/synth-generator/issues/5">#5</a></li>
+                    <li>volume設定を修正 <a href="https://github.com/ryo-i/synth-generator/issues/5">#5</a></li>
                 </ul>
             </section>
             <section>

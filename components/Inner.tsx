@@ -510,9 +510,6 @@ function Inner() {
     filter.connect(eg3);
 
     // VCA
-    amplifier.gain.value = volume;
-    amplifier.toDestination();
-
     eg3.attack = attack3 * amountEg3;
     eg3.decay = decay3 * amountEg3;
     eg3.sustain = sustain3;
@@ -523,10 +520,13 @@ function Inner() {
     lfo3.type = waveTypeLfo3;
     lfo3.frequency.value = frequencyLfo3;
     lfo3.amplitude.value = amountLfo3;
-    lfo3.min = minLfo3;
-    lfo3.max = maxLfo3;
+    lfo3.min = minLfo3 * volume;
+    lfo3.max = maxLfo3 * volume;
     lfo3.start();
     lfo3.connect(amplifier.gain);
+
+    amplifier.gain.value = volume;
+    amplifier.toDestination();
   };
 
 
