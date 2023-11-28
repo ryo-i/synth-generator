@@ -276,34 +276,37 @@ function Inner() {
   const [decay1, setDecay1] = useState(0.01);
   const [sustain1, setSustain1] = useState(1);
   const [release1, setRelease1] = useState(0.01);
+  const [amountEg1, setAmountEg1] = useState(0);
   const [eg2, setEg2] = useState(null);
   const [attack2, setAttack2] = useState(0.01);
   const [decay2, setDecay2] = useState(0.01);
   const [sustain2, setSustain2] = useState(1);
   const [release2, setRelease2] = useState(0.01);
+  const [amountEg2, setAmountEg2] = useState(0);
   const [eg3, setEg3] = useState(null);
   const [attack3, setAttack3] = useState(0.01);
   const [decay3, setDecay3] = useState(0.01);
   const [sustain3, setSustain3] = useState(1);
   const [release3, setRelease3] = useState(0.01);
+  const [amountEg3, setAmountEg3] = useState(0);
   const [lfo1, setLfo1] = useState(null);
   const [waveTypeLfo1, setWaveTypeLfo1] = useState('sine');
-  const [pulseWidthLfo1, setPulseWidthLfo1] = useState(0);
   const [frequencyLfo1, setFrequencyLfo1] = useState(0.01);
   const [minLfo1, setMinLfo1] = useState(0);
   const [maxLfo1, setMaxLfo1] = useState(0);
+  const [amountLfo1, setAmountLfo1] = useState(0);
   const [lfo2, setLfo2] = useState(null);
   const [waveTypeLfo2, setWaveTypeLfo2] = useState('sine');
-  const [pulseWidthLfo2, setPulseWidthLfo2] = useState(0);
   const [frequencyLfo2, setFrequencyLfo2] = useState(0.01);
   const [minLfo2, setMinLfo2] = useState(0);
   const [maxLfo2, setMaxLfo2] = useState(0);
+  const [amountLfo2, setAmountLfo2] = useState(0);
   const [lfo3, setLfo3] = useState(null);
   const [waveTypeLfo3, setWaveTypeLfo3] = useState('sine');
-  const [pulseWidthLfo3, setPulseWidthLfo3] = useState(0);
   const [frequencyLfo3, setFrequencyLfo3] = useState(0.01);
   const [minLfo3, setMinLfo3] = useState(0);
   const [maxLfo3, setMaxLfo3] = useState(0);
+  const [amountLfo3, setAmountLfo3] = useState(0);
 
   const vcoData = {
     vcoName: ['VCO 1', 'VCO 2'],
@@ -507,22 +510,23 @@ function Inner() {
     filter.connect(eg3);
 
     // VCA
-    eg3.attack = attack3;
-    eg3.decay = decay3;
+    amplifier.gain.value = volume;
+    amplifier.toDestination();
+
+    eg3.attack = attack3 * amountEg3;
+    eg3.decay = decay3 * amountEg3;
     eg3.sustain = sustain3;
-    eg3.release = release3;
+    eg3.release = release3 * amountEg3;
     eg3.triggerAttack();
     eg3.connect(amplifier);
 
     lfo3.type = waveTypeLfo3;
     lfo3.frequency.value = frequencyLfo3;
+    lfo3.amplitude.value = amountLfo3;
     lfo3.min = minLfo3;
     lfo3.max = maxLfo3;
     lfo3.start();
     lfo3.connect(amplifier.gain);
-
-    amplifier.gain.value = volume;
-    amplifier.toDestination();
   };
 
 
@@ -726,6 +730,11 @@ function Inner() {
         else if (isVcf) setRelease2(keyValue);
         else if (isVca) setRelease3(keyValue);
         break;
+      case 'amountEg':
+        if (isVco) setAmountEg1(keyValue);
+        else if (isVcf) setAmountEg2(keyValue);
+        else if (isVca) setAmountEg3(keyValue);
+        break;
     }
   };
 
@@ -754,6 +763,11 @@ function Inner() {
         if (isVco) setMaxLfo1(keyValue);
         else if (isVcf) setMaxLfo2(keyValue);
         else if (isVca) setMaxLfo3(keyValue);
+        break;
+      case 'amountLfo':
+        if (isVco) setAmountLfo1(keyValue);
+        else if (isVcf) setAmountLfo2(keyValue);
+        else if (isVca) setAmountLfo3(keyValue);
         break;
     }
   };
@@ -916,6 +930,15 @@ function Inner() {
                     <dt>Volume: {volume}</dt>
                     <dd>
                       <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <hr />
+                    <dt>EG Amount: {amountEg3}</dt>
+                    <dd>
+                      <input type="range" data-type="vca" name="amountEg" value={amountEg3} onChange={changeEg}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>LFO Amount: {amountLfo3}</dt>
+                    <dd>
+                      <input type="range" data-type="vca" name="amountLfo" value={amountLfo3} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
                   </dl>
                 </section>
