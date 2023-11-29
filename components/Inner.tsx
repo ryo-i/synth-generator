@@ -177,7 +177,7 @@ const ScalePlayer = styled.div`
 function Eg (props) {
   return (
     <section id="vca" className="synth_section">
-      <h3>EG</h3>
+      <h3>EG-{props.number}</h3>
       <dl>
         <dt>Attack: {props.attack}</dt>
         <dd>
@@ -204,7 +204,7 @@ function Eg (props) {
 function Lfo (props) {
   return (
     <section id="lfo" className="synth_section">
-      <h3>LFO</h3>
+      <h3>LFO-{props.number}</h3>
       <dl>
         <dt>Wave: {props.waveTypeLfo}</dt>
         <dd>
@@ -309,7 +309,7 @@ function Inner() {
   const [amountLfo3, setAmountLfo3] = useState(0);
 
   const vcoData = {
-    vcoName: ['VCO 1', 'VCO 2'],
+    vcoName: ['VCO-1', 'VCO-2'],
     vcoId: ['1', '2'],
     onOffName: ['onOff1', 'onOff2'],
     onOffValue: [onOff1, onOff2],
@@ -932,18 +932,18 @@ function Inner() {
                       <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
                     </dd>
                     <hr />
-                    <dt>EG Amount: {amountEg3}</dt>
+                    <dt>EG-1 Amount: {amountEg3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountEg" value={amountEg3} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO Amount: {amountLfo3}</dt>
+                    <dt>LFO-1 Amount: {amountLfo3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountLfo" value={amountLfo3} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
                   </dl>
                 </section>
-                <Eg type="vca" attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} />
-                <Lfo type="vca" waveTypeLfo={waveTypeLfo3} frequencyLfo={frequencyLfo3} minLfo={minLfo3} maxLfo={maxLfo3} changeLfo={changeLfo} changeWaveType={changeWaveType} />
+                <Eg type="vca" attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} number={3} />
+                <Lfo type="vca" waveTypeLfo={waveTypeLfo3} frequencyLfo={frequencyLfo3} minLfo={minLfo3} maxLfo={maxLfo3} changeLfo={changeLfo} changeWaveType={changeWaveType} number={3} />
               </TabPanel>
             </div>
           </Tabs>
