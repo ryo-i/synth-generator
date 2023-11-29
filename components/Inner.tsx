@@ -932,11 +932,11 @@ function Inner() {
                       <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
                     </dd>
                     <hr />
-                    <dt>EG-1 Amount: {amountEg3}</dt>
+                    <dt>EG-3 Amount: {amountEg3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountEg" value={amountEg3} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO-1 Amount: {amountLfo3}</dt>
+                    <dt>LFO-3 Amount: {amountLfo3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountLfo" value={amountLfo3} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
