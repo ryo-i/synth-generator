@@ -15,6 +15,9 @@ const ScalePlayer = styled.div`
     max-width: calc(${keyWidth + 'px'} * ${keyLlength});
     margin: 0 auto 20px;
     overflow-x: scroll;
+    position: sticky;
+    top: 0;
+    z-index: 100;
     .key_inner {
       background: #444;
       width: calc(${keyWidth + 'px'} * ${keyLlength});
@@ -25,7 +28,11 @@ const ScalePlayer = styled.div`
         width: ${keyWidth + 'px'};
         text-align: center;
         display: inline-block;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
         user-select: none;
+        -webkit-touch-callout: none;
         filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
         &:hover {
           cursor: pointer;
