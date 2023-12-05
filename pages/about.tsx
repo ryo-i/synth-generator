@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>鍵盤を上部で固定されるようにする <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
+                    <li>メニューも上部で固定されるようにする <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
                     <li>LFOにDelayを追加 <a href="https://github.com/ryo-i/synth-generator/issues/5">#5</a></li>
                 </ul>
             </section>

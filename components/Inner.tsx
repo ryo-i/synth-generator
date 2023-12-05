@@ -13,7 +13,7 @@ const ScalePlayer = styled.div`
   color: #fff;
   #key {
     max-width: calc(${keyWidth + 'px'} * ${keyLlength});
-    margin: 0 auto 20px;
+    margin: 0 auto 5px;
     overflow-x: scroll;
     position: sticky;
     top: 0;
@@ -50,7 +50,7 @@ const ScalePlayer = styled.div`
         top: 0;
         margin: 0 -20px;
         padding: 0;
-        background: #222;
+        background: #444;
         border: 1px solid #000;
         border-top-width: 0;
         color: #fff;
@@ -106,7 +106,11 @@ const ScalePlayer = styled.div`
 
   #synth_menu {
     margin: 0 auto;
+    padding: 5px;
     max-width: 700px;
+    background: #222;
+    position: sticky;
+    top: 147px;
     .react-tabs__tab-list {
       margin: 0 0 5px;
       border: none;
@@ -526,7 +530,7 @@ function Inner() {
     // VCA
     eg3.attack = attack3 * amountEg3;
     eg3.decay = decay3 * amountEg3;
-    eg3.sustain = sustain3;
+    eg3.sustain = sustain3 * amountEg3;
     eg3.release = release3 * amountEg3;
     eg3.triggerAttack();
     eg3.connect(amplifier);
