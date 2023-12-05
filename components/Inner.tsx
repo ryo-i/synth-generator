@@ -228,7 +228,7 @@ function Lfo (props) {
         <hr />
         <dt>Frequency: {props.frequencyLfo}</dt>
         <dd>
-          <input type="range" data-type={props.type} name="frequencyLfo" value={props.frequencyLfo} onChange={props.changeLfo}  min="0.01" max="10" step="0.01" />
+          <input type="range" data-type={props.type} name="frequencyLfo" value={props.frequencyLfo} onChange={props.changeLfo}  min="0.01" max="30" step="0.01" />
         </dd>
         <dt>Delay: {props.delayLfo}</dt>
         <dd>
