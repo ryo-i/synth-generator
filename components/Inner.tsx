@@ -110,7 +110,7 @@ const ScalePlayer = styled.div`
     max-width: 700px;
     background: #222;
     position: sticky;
-    top: 147px;
+    top: 146px;
     .react-tabs__tab-list {
       margin: 0 0 5px;
       border: none;
