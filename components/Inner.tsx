@@ -123,11 +123,6 @@ const ScalePlayer = styled.div`
     background: #222;
     position: sticky;
     top: 146px;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
     .react-tabs__tab-list {
       margin: 0 0 5px;
       border: none;
@@ -385,7 +380,8 @@ function Inner() {
         resultArray.push({
           value: middle[j].value + i,
           className: middle[j].className,
-          keyName: middle[j].keyName ? middle[j].keyName + i : ''
+          keyName: middle[j].value + i
+          // keyName: middle[j].keyName ? middle[j].keyName + i : ''
         });
       }
     }
