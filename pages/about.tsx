@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>鍵盤のキー名をC以外非表示にする <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
+                    <li>鍵盤のactive色設定 & 影調整 <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
                     <li>LFOにDelayの値を変更 <a href="https://github.com/ryo-i/synth-generator/issues/5">#5</a></li>
                 </ul>
             </section>

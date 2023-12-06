@@ -33,7 +33,9 @@ const ScalePlayer = styled.div`
         -ms-user-select: none;
         user-select: none;
         -webkit-touch-callout: none;
-        filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+        box-shadow: inset 2px 2px 2px rgba(0,0,0,0.3),
+          inset -2px -2px 2px rgba(0,0,0,0.3);
         &:hover {
           cursor: pointer;
         }
@@ -42,8 +44,11 @@ const ScalePlayer = styled.div`
         background: #FFF;
         border: 1px solid #333;
         color: #000;
-        padding:  90px 0 10px;
+        padding: 90px 0 10px;
         height: 115px;
+        &:active {
+          background: #ddd;
+        }
       }
       .b_key {
         position: absolute;
@@ -56,9 +61,15 @@ const ScalePlayer = styled.div`
         border-top-width: 0;
         color: #fff;
         height: 75px;
+        &:active {
+          background: #333;
+        }
       }
       .c_key {
         background: #ffe6b3;
+        &:active {
+          background: #f2d394;
+        }
       }
       .w_key.exclusion {
         background: #ccc;
