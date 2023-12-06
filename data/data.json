@@ -14,23 +14,23 @@
       "octave": 8,
       "keyButtons": {
         "low": [
-          {"value": "A0", "className": "w_key", "keyName": "A0"},
-          {"value": "A#0", "className": "b_key", "keyName": "A#0"},
-          {"value": "B0", "className": "w_key", "keyName": "B0"}
+          {"value": "A0", "className": "w_key", "keyName": ""},
+          {"value": "A#0", "className": "b_key", "keyName": ""},
+          {"value": "B0", "className": "w_key", "keyName": ""}
         ],
         "middle": [
           {"value": "C", "className": "w_key c_key", "keyName": "C"},
-          {"value": "C#", "className": "b_key", "keyName": "C#"},
-          {"value": "D", "className": "w_key", "keyName": "D"},
-          {"value": "D#", "className": "b_key", "keyName": "D#"},
-          {"value": "E", "className": "w_key", "keyName": "E"},
-          {"value": "F", "className": "w_key", "keyName": "F"},
-          {"value": "F#", "className": "b_key", "keyName": "F#"},
-          {"value": "G", "className": "w_key", "keyName": "G"},
-          {"value": "G#", "className": "b_key", "keyName": "G#"},
-          {"value": "A", "className": "w_key", "keyName": "A"},
-          {"value": "A#", "className": "b_key", "keyName": "A#"},
-          {"value": "B", "className": "w_key", "keyName": "B"}
+          {"value": "C#", "className": "b_key", "keyName": ""},
+          {"value": "D", "className": "w_key", "keyName": ""},
+          {"value": "D#", "className": "b_key", "keyName": ""},
+          {"value": "E", "className": "w_key", "keyName": ""},
+          {"value": "F", "className": "w_key", "keyName": ""},
+          {"value": "F#", "className": "b_key", "keyName": ""},
+          {"value": "G", "className": "w_key", "keyName": ""},
+          {"value": "G#", "className": "b_key", "keyName": ""},
+          {"value": "A", "className": "w_key", "keyName": ""},
+          {"value": "A#", "className": "b_key", "keyName": ""},
+          {"value": "B", "className": "w_key", "keyName": ""}
         ],
         "high": [
           {"value": "C8", "className": "w_key c_key", "keyName": "C8"}

@@ -43,13 +43,14 @@ const ScalePlayer = styled.div`
         border: 1px solid #333;
         color: #000;
         padding:  90px 0 10px;
+        height: 115px;
       }
       .b_key {
         position: absolute;
         z-index: 10;
         top: 0;
         margin: 0 -20px;
-        padding: 0;
+        padding: 0 5px;
         background: #444;
         border: 1px solid #000;
         border-top-width: 0;
@@ -363,11 +364,12 @@ function Inner() {
 
     // Push Middole Kyes
     for (let i = 1; i < inner.octave; i++) {
-      for (let j = 0; j < keyButtonsData.middle.length; j++) {
+      const middle = keyButtonsData.middle;
+      for (let j = 0; j < middle.length; j++) {
         resultArray.push({
-          value: keyButtonsData.middle[j].value + i,
-          className: keyButtonsData.middle[j].className,
-          keyName: keyButtonsData.middle[j].value + i
+          value: middle[j].value + i,
+          className: middle[j].className,
+          keyName: middle[j].keyName ? middle[j].keyName + i : ''
         });
       }
     }
