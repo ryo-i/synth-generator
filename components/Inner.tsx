@@ -380,8 +380,8 @@ function Inner() {
         resultArray.push({
           value: middle[j].value + i,
           className: middle[j].className,
-          keyName: middle[j].value + i
-          // keyName: middle[j].keyName ? middle[j].keyName + i : ''
+          // keyName: middle[j].value + i
+          keyName: middle[j].keyName ? middle[j].keyName + i : ''
         });
       }
     }
