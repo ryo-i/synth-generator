@@ -18,6 +18,11 @@ const ScalePlayer = styled.div`
     position: sticky;
     top: 0;
     z-index: 100;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
     .key_inner {
       background: #444;
       width: calc(${keyWidth + 'px'} * ${keyLlength});
@@ -28,11 +33,6 @@ const ScalePlayer = styled.div`
         width: ${keyWidth + 'px'};
         text-align: center;
         display: inline-block;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-touch-callout: none;
         filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
         box-shadow: inset 2px 2px 2px rgba(0,0,0,0.3),
           inset -2px -2px 2px rgba(0,0,0,0.3);
@@ -123,6 +123,11 @@ const ScalePlayer = styled.div`
     background: #222;
     position: sticky;
     top: 146px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
     .react-tabs__tab-list {
       margin: 0 0 5px;
       border: none;

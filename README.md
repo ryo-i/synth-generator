@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- 鍵盤のactive色設定 & 影調整 [#7](https://github.com/ryo-i/synth-generator/issues/7)
+- テキスト選択無効の範囲を広げる [#7](https://github.com/ryo-i/synth-generator/issues/7)
 - LFOにDelayの値を変更  [#5](https://github.com/ryo-i/synth-generator/issues/5)
 
 ## 詳細（ブログ）
