@@ -479,12 +479,26 @@ function Inner() {
     pulseOsc2.stop();
     osc2.stop();
     noiseOsc.stop();
+    lfo1.stop();
     lfo3.stop();
 
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
     const keyValue: string = eventTarget.value;
 
     // VCO
+    eg1.attack = attack1;
+    eg1.decay = decay1;
+    eg1.sustain = sustain1;
+    eg1.release = release1;
+
+    lfo1.type = waveTypeLfo1;
+    lfo1.frequency.value = 0.01;
+    lfo1.frequency.linearRampTo(frequencyLfo1, delayLfo1);
+    lfo1.amplitude.value = amountLfo1;
+    lfo1.min = minLfo3 * volume;
+    lfo1.max = maxLfo3 * volume;
+    lfo1.start();
+
     const changeOctaveKey1 = getOctaveKey(keyValue, octave1);
     const changeCoarseKey1 = getCoarseKey(changeOctaveKey1, coarse1);
     const changeFineValue1 = getFineValue(changeCoarseKey1, fine1);
@@ -508,6 +522,17 @@ function Inner() {
     gain2.connect(gainMaster);
     gainNoise.connect(gainMaster);
     gainMaster.connect(filter);
+    // osc1.connect(eg1);
+    // pulseOsc1.connect(eg1);
+    // osc2.connect(eg1);
+    // noiseOsc.connect(eg1);
+    // pulseOsc2.connect(eg1);
+    // eg1.triggerAttack();
+    // eg1.connect(gainMaster);
+    // lfo1.connect(osc1.frequency);
+    // lfo1.connect(pulseOsc1.frequency);
+    // lfo1.connect(osc2.frequency);
+    // lfo1.connect(pulseOsc2.frequency);
 
     if (isValue1 && isPulse1) {
       pulseOsc1.width.value = pulseWidth1;
@@ -542,10 +567,10 @@ function Inner() {
     filter.connect(eg3);
 
     // VCA
-    eg3.attack = attack3 * amountEg3;
-    eg3.decay = decay3 * amountEg3;
-    eg3.sustain = sustain3 * amountEg3;
-    eg3.release = release3 * amountEg3;
+    eg3.attack = attack3;
+    eg3.decay = decay3;
+    eg3.sustain = sustain3;
+    eg3.release = release3;
     eg3.triggerAttack();
     eg3.connect(amplifier);
 
@@ -558,6 +583,7 @@ function Inner() {
     lfo3.start();
     lfo3.connect(amplifier.gain);
 
+    // amplifier.gain.value = volume * amountEg3;
     amplifier.gain.value = volume;
     amplifier.toDestination();
   };
@@ -565,6 +591,7 @@ function Inner() {
 
   // 鍵盤を押したら音を止める
   const keyRelease = () => {
+    eg1.triggerRelease();
     eg3.triggerRelease();
   };
 
@@ -822,10 +849,12 @@ function Inner() {
                 key={val.value}
                 value={val.value}
                 className={val.className}
-                onMouseDown={keyAttack}
-                onTouchStart={keyAttack}
-                onMouseUp={keyRelease}
-                onTouchEnd={keyRelease}
+                onPointerDown={keyAttack}
+                onPointerUp={keyRelease}
+                // onMouseDown={keyAttack}
+                // onTouchStart={keyAttack}
+                // onMouseUp={keyRelease}
+                // onTouchEnd={keyRelease}
               >
                 {val.keyName}
               </button>
@@ -910,22 +939,24 @@ function Inner() {
               </TabPanel>
               <TabPanel>
                 <section id="mixer" className="synth_section">
-                    <h3>MIXER</h3>
-                    <dl>
-                      <dt>VCO 1: {mixer1}</dt>
-                      <dd>
-                        <input type="range" name="mixer1" data-osc="1" value={mixer1} onChange={changeMixer}  min="0" max="1" step="0.01" />
-                      </dd>
-                      <dt>VOC 2: {mixer2}</dt>
-                      <dd>
-                        <input type="range" name="mixer2" data-osc="2" value={mixer2} onChange={changeMixer}  min="0" max="1" step="0.01" />
-                      </dd>
-                      <dt>Noise: {mixerNoise}</dt>
-                      <dd>
-                        <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
-                      </dd>
-                    </dl>
-                  </section>
+                  <h3>MIXER</h3>
+                  <dl>
+                    <dt>VCO 1: {mixer1}</dt>
+                    <dd>
+                      <input type="range" name="mixer1" data-osc="1" value={mixer1} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>VOC 2: {mixer2}</dt>
+                    <dd>
+                      <input type="range" name="mixer2" data-osc="2" value={mixer2} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>Noise: {mixerNoise}</dt>
+                    <dd>
+                      <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                    </dd>
+                  </dl>
+                </section>
+                <Eg type="vco" attack={attack1} decay={decay1} sustain={sustain1} release={release1} changeEg={changeEg} number={1} />
+                <Lfo type="vco" waveTypeLfo={waveTypeLfo1} frequencyLfo={frequencyLfo1} delayLfo={delayLfo1} minLfo={minLfo1} maxLfo={maxLfo1} changeLfo={changeLfo} changeWaveType={changeWaveType} number={1} />
               </TabPanel>
               <TabPanel>
                 <section id="vcf" className="synth_section">

@@ -8,7 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- 鍵盤のキー名やはり非表示に [#7](https://github.com/ryo-i/synth-generator/issues/7)
+- 鍵盤をpointerイベントに変更してみる [#7](https://github.com/ryo-i/synth-generator/issues/7)
 - LFOにDelayの値を変更  [#5](https://github.com/ryo-i/synth-generator/issues/5)
 
 ## 詳細（ブログ）
