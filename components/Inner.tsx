@@ -249,11 +249,11 @@ function Lfo (props) {
         <hr />
         <dt>Min: {props.minLfo}</dt>
         <dd>
-          <input type="range" data-type={props.type} name="minLfo" value={props.minLfo} onChange={props.changeLfo}  min="0" max="1" step="0.01" />
+          <input type="range" data-type={props.type} name="minLfo" value={props.minLfo} onChange={props.changeLfo}  min="0" max="10" step="0.01" />
         </dd>
         <dt>Max: {props.maxLfo}</dt>
         <dd>
-          <input type="range" data-type={props.type} name="maxLfo" value={props.maxLfo} onChange={props.changeLfo}  min="0.01" max="10" step="0.01" />
+          <input type="range" data-type={props.type} name="maxLfo" value={props.maxLfo} onChange={props.changeLfo}  min="0" max="10" step="0.01" />
         </dd>
       </dl>
     </section>
@@ -301,7 +301,7 @@ function Inner() {
   const [eg1, setEg1] = useState(null);
   const [attack1, setAttack1] = useState(0.01);
   const [decay1, setDecay1] = useState(0.01);
-  const [sustain1, setSustain1] = useState(1);
+  const [sustain1, setSustain1] = useState(0);
   const [release1, setRelease1] = useState(0.01);
   const [amountEg1, setAmountEg1] = useState(0);
   const [eg2, setEg2] = useState(null);
@@ -417,15 +417,23 @@ function Inner() {
     setFilter(new Tone.Filter());
     setAmplifier(new Tone.Gain(1));
 
-    const egInit = new Tone.AmplitudeEnvelope({
+    const FrequencyEnvelope = new Tone.FrequencyEnvelope({
+      attack: 0.01,
+      decay: 0.01,
+      sustain: 0,
+      release: 0.01,
+    });
+
+    const AmplitudeEnvelope = new Tone.AmplitudeEnvelope({
       attack: 0.01,
       decay: 0.01,
       sustain: 1,
       release: 0.01,
     });
-    setEg1(egInit);
-    setEg2(egInit);
-    setEg3(egInit);
+
+    setEg1(FrequencyEnvelope);
+    setEg2(AmplitudeEnvelope);
+    setEg3(AmplitudeEnvelope);
 
     setLfo1(new Tone.LFO());
     setLfo2(new Tone.LFO());
@@ -486,19 +494,6 @@ function Inner() {
     const keyValue: string = eventTarget.value;
 
     // VCO
-    eg1.attack = attack1;
-    eg1.decay = decay1;
-    eg1.sustain = sustain1;
-    eg1.release = release1;
-
-    lfo1.type = waveTypeLfo1;
-    lfo1.frequency.value = 0.01;
-    lfo1.frequency.linearRampTo(frequencyLfo1, delayLfo1);
-    lfo1.amplitude.value = amountLfo1;
-    lfo1.min = minLfo3 * volume;
-    lfo1.max = maxLfo3 * volume;
-    lfo1.start();
-
     const changeOctaveKey1 = getOctaveKey(keyValue, octave1);
     const changeCoarseKey1 = getCoarseKey(changeOctaveKey1, coarse1);
     const changeFineValue1 = getFineValue(changeCoarseKey1, fine1);
@@ -509,6 +504,26 @@ function Inner() {
     const isValue2 = onOff2 && changeOctaveKey2 && changeCoarseKey2;
     const isPulse1 = waveType1 === 'pulse';
     const isPulse2 = waveType2 === 'pulse';
+
+    eg1.attack = attack1;
+    eg1.decay = decay1;
+    eg1.sustain = sustain1;
+    eg1.release = release1;
+    eg1.baseFrequency = changeFineValue1;
+    eg1.octaves = amountEg1;
+    eg1.triggerAttack();
+    eg1.connect(osc1.frequency);
+    eg1.connect(pulseOsc1.frequency);
+
+    lfo1.type = waveTypeLfo1;
+    lfo1.frequency.value = 0.01;
+    lfo1.frequency.linearRampTo(frequencyLfo1, delayLfo1);
+    lfo1.amplitude.value = amountLfo1;
+    lfo1.min = minLfo1 * amountLfo1 * -10;
+    lfo1.max = maxLfo1 * amountLfo1 * 10;
+    lfo1.start();
+    lfo1.connect(osc1.frequency);
+    lfo1.connect(pulseOsc1.frequency);
 
     gain1.gain.value = mixer1;
     gain2.gain.value = mixer2;
@@ -522,17 +537,6 @@ function Inner() {
     gain2.connect(gainMaster);
     gainNoise.connect(gainMaster);
     gainMaster.connect(filter);
-    // osc1.connect(eg1);
-    // pulseOsc1.connect(eg1);
-    // osc2.connect(eg1);
-    // noiseOsc.connect(eg1);
-    // pulseOsc2.connect(eg1);
-    // eg1.triggerAttack();
-    // eg1.connect(gainMaster);
-    // lfo1.connect(osc1.frequency);
-    // lfo1.connect(pulseOsc1.frequency);
-    // lfo1.connect(osc2.frequency);
-    // lfo1.connect(pulseOsc2.frequency);
 
     if (isValue1 && isPulse1) {
       pulseOsc1.width.value = pulseWidth1;
@@ -851,10 +855,6 @@ function Inner() {
                 className={val.className}
                 onPointerDown={keyAttack}
                 onPointerUp={keyRelease}
-                // onMouseDown={keyAttack}
-                // onTouchStart={keyAttack}
-                // onMouseUp={keyRelease}
-                // onTouchEnd={keyRelease}
               >
                 {val.keyName}
               </button>
@@ -952,6 +952,15 @@ function Inner() {
                     <dt>Noise: {mixerNoise}</dt>
                     <dd>
                       <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <hr />
+                    <dt>EG-1 Amount: {amountEg1}</dt>
+                    <dd>
+                      <input type="range" data-type="vco" name="amountEg" value={amountEg1} onChange={changeEg}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>LFO-1 Amount: {amountLfo1}</dt>
+                    <dd>
+                      <input type="range" data-type="vco" name="amountLfo" value={amountLfo1} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
                   </dl>
                 </section>
