@@ -297,7 +297,6 @@ function Inner() {
   const [resonance, setResonance] = useState(0);
   const [rollOff, setRollOff] = useState(-12);
   const [amplifier, setAmplifier] = useState(null);
-  const [volume, setVolume] = useState(1);
   const [eg1, setEg1] = useState(null);
   const [attack1, setAttack1] = useState(0.01);
   const [decay1, setDecay1] = useState(0.01);
@@ -315,7 +314,7 @@ function Inner() {
   const [decay3, setDecay3] = useState(0.01);
   const [sustain3, setSustain3] = useState(1);
   const [release3, setRelease3] = useState(0.01);
-  const [amountEg3, setAmountEg3] = useState(0);
+  const [amountEg3, setAmountEg3] = useState(1);
   const [lfo1, setLfo1] = useState(null);
   const [waveTypeLfo1, setWaveTypeLfo1] = useState('sine');
   const [frequencyLfo1, setFrequencyLfo1] = useState(0.01);
@@ -582,13 +581,12 @@ function Inner() {
     lfo3.frequency.value = 0.01;
     lfo3.frequency.linearRampTo(frequencyLfo3, delayLfo3);
     lfo3.amplitude.value = amountLfo3;
-    lfo3.min = minLfo3 * volume;
-    lfo3.max = maxLfo3 * volume;
+    lfo3.min = minLfo3 * amountEg3;
+    lfo3.max = maxLfo3 * amountEg3;
     lfo3.start();
     lfo3.connect(amplifier.gain);
 
-    // amplifier.gain.value = volume * amountEg3;
-    amplifier.gain.value = volume;
+    amplifier.gain.value = amountEg3;
     amplifier.toDestination();
   };
 
@@ -746,19 +744,6 @@ function Inner() {
         break;
       case 'rollOff':
         setRollOff(Number(keyValue));
-        break;
-    }
-  };
-
-
-  // VCO設定
-  const changeVolume = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const keyValue: number = Number(e.target.value);
-    const keyName: string = e.target.name;
-
-    switch (keyName) {
-      case 'volume':
-        setVolume(keyValue);
         break;
     }
   };
@@ -941,11 +926,11 @@ function Inner() {
                 <section id="mixer" className="synth_section">
                   <h3>MIXER</h3>
                   <dl>
-                    <dt>VCO 1: {mixer1}</dt>
+                    <dt>VCO-1: {mixer1}</dt>
                     <dd>
                       <input type="range" name="mixer1" data-osc="1" value={mixer1} onChange={changeMixer}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>VOC 2: {mixer2}</dt>
+                    <dt>VCO-2: {mixer2}</dt>
                     <dd>
                       <input type="range" name="mixer2" data-osc="2" value={mixer2} onChange={changeMixer}  min="0" max="1" step="0.01" />
                     </dd>
@@ -954,11 +939,11 @@ function Inner() {
                       <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
                     </dd>
                     <hr />
-                    <dt>EG-1 Amount: {amountEg1}</dt>
+                    <dt>EG-1 Amt (VCO-1): {amountEg1}</dt>
                     <dd>
                       <input type="range" data-type="vco" name="amountEg" value={amountEg1} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO-1 Amount: {amountLfo1}</dt>
+                    <dt>LFO-1 Amt (VCO-1): {amountLfo1}</dt>
                     <dd>
                       <input type="range" data-type="vco" name="amountLfo" value={amountLfo1} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
@@ -1005,16 +990,11 @@ function Inner() {
                 <section id="vca" className="synth_section">
                   <h3>VCA</h3>
                   <dl>
-                    <dt>Volume: {volume}</dt>
-                    <dd>
-                      <input type="range" name="volume" value={volume} onChange={changeVolume}  min="0" max="1" step="0.01" />
-                    </dd>
-                    <hr />
-                    <dt>EG-3 Amount: {amountEg3}</dt>
+                    <dt>EG-3 Amt (Volume): {amountEg3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountEg" value={amountEg3} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO-3 Amount: {amountLfo3}</dt>
+                    <dt>LFO-3 Amt: {amountLfo3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountLfo" value={amountLfo3} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
