@@ -270,9 +270,9 @@ function Inner() {
   const [pulseOsc1, setPulseOsc1] = useState(null);
   const [pulseOsc2, setPulseOsc2] = useState(null);
   const [noiseOsc, setNoiseOsc] = useState(null);
-  const [onOff1, setOnOff1] = useState(false);
-  const [onOff2, setOnOff2] = useState(false);
-  const [onOffNoise, setOnOffNoise] = useState(false);
+  // const [onOff1, setOnOff1] = useState(true);
+  // const [onOff2, setOnOff2] = useState(true);
+  // const [onOffNoise, setOnOffNoise] = useState(true);
   const [waveType1, setWaveType1] = useState('sawtooth');
   const [waveType2, setWaveType2] = useState('sawtooth');
   const [waveTypeNoise, setWaveTypeNoise] = useState('white');
@@ -285,8 +285,8 @@ function Inner() {
   const [fine1, setFine1] = useState(0);
   const [fine2, setFine2] = useState(0);
   const [mixer1, setMixer1] = useState(0.5);
-  const [mixer2, setMixer2] = useState(0.5);
-  const [mixerNoise, setMixerNoise] = useState(0.5);
+  const [mixer2, setMixer2] = useState(0);
+  const [mixerNoise, setMixerNoise] = useState(0);
   const [gain1, setGain1] = useState(null);
   const [gain2, setGain2] = useState(null);
   const [gainNoise, setGainNoise] = useState(null);
@@ -345,7 +345,7 @@ function Inner() {
     vcoName: ['VCO-1', 'VCO-2'],
     vcoId: ['1', '2'],
     onOffName: ['onOff1', 'onOff2'],
-    onOffValue: [onOff1, onOff2],
+    // onOffValue: [onOff1, onOff2],
     waveTypeName: ['waveType1', 'waveType2'],
     waveTypeValue: [waveType1, waveType2],
     pulseWidthName: ['pulseWidth1', 'pulseWidth2'],
@@ -503,8 +503,10 @@ function Inner() {
     const changeOctaveKey2 = getOctaveKey(keyValue, octave2);
     const changeCoarseKey2 = getCoarseKey(changeOctaveKey2, coarse2);
     const changeFineValue2 = getFineValue(changeCoarseKey2, fine2);
-    const isValue1 = onOff1 && changeOctaveKey1 && changeCoarseKey1;
-    const isValue2 = onOff2 && changeOctaveKey2 && changeCoarseKey2;
+    // const isValue1 = onOff1 && changeOctaveKey1 && changeCoarseKey1;
+    // const isValue2 = onOff2 && changeOctaveKey2 && changeCoarseKey2;
+    const isValue1 = changeOctaveKey1 && changeCoarseKey1;
+    const isValue2 = changeOctaveKey2 && changeCoarseKey2;
     const isPulse1 = waveType1 === 'pulse';
     const isPulse2 = waveType2 === 'pulse';
 
@@ -583,10 +585,10 @@ function Inner() {
       osc2.start();
     }
 
-    if (onOffNoise) {
+    // if (onOffNoise) {
       noiseOsc.type = waveTypeNoise;
       noiseOsc.start();
-    }
+    // }
 
     // VCF
     filter.type = filterType;
@@ -613,9 +615,6 @@ function Inner() {
     lfo2.connect(filter.frequency);
     lfo2.start();
     filter.connect(eg3);
-
-    console.log(minLfo2 * cutOff / 10)
-    console.log(maxLfo2 * cutOff / 10)
 
     // VCA
     eg3.attack = attack3;
@@ -650,24 +649,24 @@ function Inner() {
 
   // VCO設定
   // On/Off変更
-  const changeSound = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const keyValue: string = e.target.value;
-    const oscType: string = e.target.dataset.osc;
-    const isSound: boolean = keyValue === 'on' ? true : false;
-    console.log('isSound', isSound)
+  // const changeSound = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  //   const keyValue: string = e.target.value;
+  //   const oscType: string = e.target.dataset.osc;
+  //   const isSound: boolean = keyValue === 'on' ? true : false;
+  //   console.log('isSound', isSound)
 
-    switch (oscType) {
-      case '1':
-        setOnOff1(isSound);
-        break;
-      case '2':
-        setOnOff2(isSound);
-        break;
-      case 'noise':
-        setOnOffNoise(isSound);
-        break;
-    }
-  };
+  //   switch (oscType) {
+  //     case '1':
+  //       setOnOff1(isSound);
+  //       break;
+  //     case '2':
+  //       setOnOff2(isSound);
+  //       break;
+  //     case 'noise':
+  //       setOnOffNoise(isSound);
+  //       break;
+  //   }
+  // };
 
 
   // 波形変更
@@ -917,7 +916,7 @@ function Inner() {
                 {inner.vcoName.map((vcoName, index) =>
                   <section id={vcoName} className="synth_section" key={index}>
                     <h3>{vcoData.vcoName[index]}</h3>
-                    <div className="onOffButton">
+                    {/* <div className="onOffButton">
                       <label>
                         <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="on" onChange={changeSound} defaultChecked={vcoData.onOffValue[index] ? true : false} />On
                       </label>
@@ -925,7 +924,7 @@ function Inner() {
                         <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="off" onChange={changeSound} defaultChecked={!vcoData.onOffValue[index] ? true : false} />Off
                       </label>
                     </div>
-                    <hr />
+                    <hr /> */}
                     <dl>
                       <dt>Wave: {vcoData.waveTypeValue[index]}</dt>
                       <dd>
@@ -957,7 +956,7 @@ function Inner() {
                 )}
                 <section id="noise" className="synth_section">
                   <h3>Noise</h3>
-                  <div className="onOffButton">
+                  {/* <div className="onOffButton">
                     <label>
                       <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} defaultChecked={onOffNoise ? true : false} />On
                     </label>
@@ -965,7 +964,7 @@ function Inner() {
                       <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked={!onOffNoise ? true : false} />Off
                     </label>
                   </div>
-                  <hr />
+                  <hr /> */}
                   <dl>
                     <dt>Wave: {waveTypeNoise}</dt>
                     <dd>
