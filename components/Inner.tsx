@@ -293,7 +293,7 @@ function Inner() {
   const [gainMaster, setGainMaster] = useState(null);
   const [filter, setFilter] = useState(null);
   const [filterType, setFilterType] = useState('lowpass');
-  const [cutOff, setCutOff] = useState(20000);
+  const [cutOff, setCutOff] = useState(10000);
   const [resonance, setResonance] = useState(0);
   const [rollOff, setRollOff] = useState(-12);
   const [amplifier, setAmplifier] = useState(null);
@@ -308,9 +308,9 @@ function Inner() {
   const [eg2, setEg2] = useState(null);
   const [attack2, setAttack2] = useState(0.01);
   const [decay2, setDecay2] = useState(0.01);
-  const [sustain2, setSustain2] = useState(1);
+  const [sustain2, setSustain2] = useState(0);
   const [release2, setRelease2] = useState(0.01);
-  const [amountEg2, setAmountEg2] = useState(0);
+  const [amountEg2, setAmountEg2] = useState(1);
   const [eg3, setEg3] = useState(null);
   const [attack3, setAttack3] = useState(0.01);
   const [decay3, setDecay3] = useState(0.01);
@@ -332,7 +332,7 @@ function Inner() {
   const [delayLfo2, setDelayLfo2] = useState(0);
   const [minLfo2, setMinLfo2] = useState(0);
   const [maxLfo2, setMaxLfo2] = useState(0);
-  const [amountLfo2, setAmountLfo2] = useState(0);
+  const [amountLfo2, setAmountLfo2] = useState(1);
   const [lfo3, setLfo3] = useState(null);
   const [waveTypeLfo3, setWaveTypeLfo3] = useState('sine');
   const [frequencyLfo3, setFrequencyLfo3] = useState(0.01);
@@ -432,7 +432,7 @@ function Inner() {
 
     setEgOsc1(new Tone.FrequencyEnvelope(frequencyEgParam));
     setEgOsc2(new Tone.FrequencyEnvelope(frequencyEgParam));
-    setEg2(new Tone.AmplitudeEnvelope(amplitudeEgParam));
+    setEg2(new Tone.FrequencyEnvelope(amplitudeEgParam));
     setEg3(new Tone.AmplitudeEnvelope(amplitudeEgParam));
 
     setLfoOsc1(new Tone.LFO());
@@ -490,6 +490,7 @@ function Inner() {
     noiseOsc.stop();
     lfoOsc1.stop();
     lfoOsc2.stop();
+    lfo2.stop();
     lfo3.stop();
 
     const eventTarget: HTMLButtonElement = e.target as HTMLButtonElement;
@@ -592,7 +593,29 @@ function Inner() {
     filter.frequency.value = cutOff;
     filter.Q.value = resonance;
     filter.rolloff = rollOff;
+
+    eg2.attack = attack2;
+    eg2.decay = decay2;
+    eg2.sustain = sustain2;
+    eg2.release = release2;
+    eg2.baseFrequency = cutOff;
+    eg2.octaves = amountEg2 * 5;
+    eg2.triggerAttack();
+    eg2.connect(filter.frequency);
+
+    lfo2.type = waveTypeLfo2;
+    lfo2.frequency.value = 0.01;
+    lfo2.frequency.linearRampTo(frequencyLfo2, delayLfo2);
+    lfo2.amplitude.value = amountLfo2;
+    lfo2.min = minLfo2 * cutOff / 10;
+    lfo2.max = maxLfo2 * cutOff / 10;
+
+    lfo2.connect(filter.frequency);
+    lfo2.start();
     filter.connect(eg3);
+
+    console.log(minLfo2 * cutOff / 10)
+    console.log(maxLfo2 * cutOff / 10)
 
     // VCA
     eg3.attack = attack3;
@@ -620,6 +643,7 @@ function Inner() {
   const keyRelease = () => {
     egOsc1.triggerRelease();
     egOsc2.triggerRelease();
+    eg2.triggerRelease();
     eg3.triggerRelease();
   };
 
@@ -990,8 +1014,8 @@ function Inner() {
                     </dd>
                   </dl>
                 </section>
-                <Eg type="vco" attack={attack1} decay={decay1} sustain={sustain1} release={release1} changeEg={changeEg} number={1} />
-                <Lfo type="vco" waveTypeLfo={waveTypeLfo1} frequencyLfo={frequencyLfo1} delayLfo={delayLfo1} minLfo={minLfo1} maxLfo={maxLfo1} changeLfo={changeLfo} changeWaveType={changeWaveType} number={1} />
+                <Eg type="vco" number={1} attack={attack1} decay={decay1} sustain={sustain1} release={release1} changeEg={changeEg} />
+                <Lfo type="vco" number={1} waveTypeLfo={waveTypeLfo1} frequencyLfo={frequencyLfo1} delayLfo={delayLfo1} minLfo={minLfo1} maxLfo={maxLfo1} changeLfo={changeLfo} changeWaveType={changeWaveType} />
               </TabPanel>
               <TabPanel>
                 <section id="vcf" className="synth_section">
@@ -1008,7 +1032,7 @@ function Inner() {
                     <hr />
                     <dt>Frequency (cut off): {cutOff}Hz</dt>
                     <dd>
-                      <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="20000" step="1" />
+                      <input type="range" name="cutOff" value={cutOff} onChange={changeFilter}  min="20" max="10000" step="1" />
                     </dd>
                     <hr />
                     <dt>Q (Resonance): {resonance}</dt>
@@ -1024,8 +1048,19 @@ function Inner() {
                           </label>
                         )}
                     </dd>
+                    <hr />
+                    <dt>EG-2 Amt: {amountEg2}</dt>
+                    <dd>
+                      <input type="range" data-type="vcf" name="amountEg" value={amountEg2} onChange={changeEg}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>LFO-2 Amt: {amountLfo2}</dt>
+                    <dd>
+                      <input type="range" data-type="vcf" name="amountLfo" value={amountLfo2} onChange={changeLfo}  min="0" max="1" step="0.01" />
+                    </dd>
                   </dl>
                 </section>
+                <Eg type="vcf" number={2} attack={attack2} decay={decay2} sustain={sustain2} release={release2} changeEg={changeEg} />
+                <Lfo type="vcf" number={2} waveTypeLfo={waveTypeLfo2} frequencyLfo={frequencyLfo2} delayLfo={delayLfo2} minLfo={minLfo2} maxLfo={maxLfo2} changeLfo={changeLfo} changeWaveType={changeWaveType} />
               </TabPanel>
               <TabPanel>
                 <section id="vca" className="synth_section">
@@ -1041,8 +1076,8 @@ function Inner() {
                     </dd>
                   </dl>
                 </section>
-                <Eg type="vca" attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} number={3} />
-                <Lfo type="vca" waveTypeLfo={waveTypeLfo3} frequencyLfo={frequencyLfo3} delayLfo={delayLfo3} minLfo={minLfo3} maxLfo={maxLfo3} changeLfo={changeLfo} changeWaveType={changeWaveType} number={3} />
+                <Eg type="vca" number={3} attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} />
+                <Lfo type="vca" number={3} waveTypeLfo={waveTypeLfo3} frequencyLfo={frequencyLfo3} delayLfo={delayLfo3} minLfo={minLfo3} maxLfo={maxLfo3} changeLfo={changeLfo} changeWaveType={changeWaveType} />
               </TabPanel>
             </div>
           </Tabs>
