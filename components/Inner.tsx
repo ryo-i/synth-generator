@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef }  from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { inner } from '../data/data.json';
@@ -9,8 +9,18 @@ const keyWidth = 40;
 const keyLlength = 52;
 
 // CSS in JS
+const flashing = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+`;
+
 const ScalePlayer = styled.div`
   color: #fff;
+  position: relative;
   #key {
     max-width: calc(${keyWidth + 'px'} * ${keyLlength});
     margin: 0 auto 4px;
@@ -86,6 +96,35 @@ const ScalePlayer = styled.div`
     }
   }
 
+  .startButton {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    width: 100%;
+    height: 146px;
+    background: rgba(0,0,0,0.7);
+    display: grid;
+    place-items: center;
+    button {
+      background: #A63744;
+      padding: 10px 20px;
+      color: #fff;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+      animation: ${flashing} 1.5s linear infinite;
+      &:hover {
+        opacity: 0.8;
+        cursor: pointer;
+      }
+    }
+
+    &--hide {
+      display: none;
+    }
+  }
+
   #scale_text {
     margin: 15px 0;
     text-align: center;
@@ -97,22 +136,6 @@ const ScalePlayer = styled.div`
     }
     p {
       margin: 0;
-    }
-    .start_button {
-      margin: 0 5px 0 0;
-      padding: 0;
-      width: 25px;
-      height: 20px;
-      font-size: 10px;
-      font-family: inherit;
-      border-radius: 5px;
-      border: 1px solid #fff;
-      background: #000;
-      color : #fff;
-      &:hover {
-        opacity: 0.8;
-        cursor: pointer;
-      }
     }
   }
 
@@ -265,14 +288,12 @@ function Inner() {
   // Hooks
   const keyElement = useRef<HTMLInputElement>(null);
   const [keyButtons, setKeyButtons] = useState([]);
+  const [isStart, setIsStart] = useState('false');
   const [osc1, setOsc1] = useState(null);
   const [osc2, setOsc2] = useState(null);
   const [pulseOsc1, setPulseOsc1] = useState(null);
   const [pulseOsc2, setPulseOsc2] = useState(null);
   const [noiseOsc, setNoiseOsc] = useState(null);
-  // const [onOff1, setOnOff1] = useState(true);
-  // const [onOff2, setOnOff2] = useState(true);
-  // const [onOffNoise, setOnOffNoise] = useState(true);
   const [waveType1, setWaveType1] = useState('sawtooth');
   const [waveType2, setWaveType2] = useState('sawtooth');
   const [waveTypeNoise, setWaveTypeNoise] = useState('white');
@@ -344,8 +365,6 @@ function Inner() {
   const vcoData = {
     vcoName: ['VCO-1', 'VCO-2'],
     vcoId: ['1', '2'],
-    onOffName: ['onOff1', 'onOff2'],
-    // onOffValue: [onOff1, onOff2],
     waveTypeName: ['waveType1', 'waveType2'],
     waveTypeValue: [waveType1, waveType2],
     pulseWidthName: ['pulseWidth1', 'pulseWidth2'],
@@ -503,8 +522,6 @@ function Inner() {
     const changeOctaveKey2 = getOctaveKey(keyValue, octave2);
     const changeCoarseKey2 = getCoarseKey(changeOctaveKey2, coarse2);
     const changeFineValue2 = getFineValue(changeCoarseKey2, fine2);
-    // const isValue1 = onOff1 && changeOctaveKey1 && changeCoarseKey1;
-    // const isValue2 = onOff2 && changeOctaveKey2 && changeCoarseKey2;
     const isValue1 = changeOctaveKey1 && changeCoarseKey1;
     const isValue2 = changeOctaveKey2 && changeCoarseKey2;
     const isPulse1 = waveType1 === 'pulse';
@@ -585,10 +602,8 @@ function Inner() {
       osc2.start();
     }
 
-    // if (onOffNoise) {
-      noiseOsc.type = waveTypeNoise;
-      noiseOsc.start();
-    // }
+    noiseOsc.type = waveTypeNoise;
+    noiseOsc.start();
 
     // VCF
     filter.type = filterType;
@@ -649,24 +664,19 @@ function Inner() {
 
   // VCO設定
   // On/Off変更
-  // const changeSound = (e: React.ChangeEvent<HTMLInputElement>): void => {
-  //   const keyValue: string = e.target.value;
-  //   const oscType: string = e.target.dataset.osc;
-  //   const isSound: boolean = keyValue === 'on' ? true : false;
-  //   console.log('isSound', isSound)
+  const changeStart = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    const isStart: string = (e.target as HTMLButtonElement).value;
+    console.log('isStart', isStart)
 
-  //   switch (oscType) {
-  //     case '1':
-  //       setOnOff1(isSound);
-  //       break;
-  //     case '2':
-  //       setOnOff2(isSound);
-  //       break;
-  //     case 'noise':
-  //       setOnOffNoise(isSound);
-  //       break;
-  //   }
-  // };
+    switch (isStart) {
+      case 'true':
+        setIsStart('false');
+        break;
+      case 'false':
+        setIsStart('true');
+        break;
+    }
+  };
 
 
   // 波形変更
@@ -901,6 +911,9 @@ function Inner() {
             )}
           </div>
         </div>
+        <div className={(isStart === 'true') ? 'startButton startButton--hide' : 'startButton'}>
+          <button type="button" name="start" value={isStart} onClick={changeStart}>Start</button>
+        </div>
         <div id="synth">
           <Tabs>
             <nav  id="synth_menu">
@@ -916,15 +929,6 @@ function Inner() {
                 {inner.vcoName.map((vcoName, index) =>
                   <section id={vcoName} className="synth_section" key={index}>
                     <h3>{vcoData.vcoName[index]}</h3>
-                    {/* <div className="onOffButton">
-                      <label>
-                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="on" onChange={changeSound} defaultChecked={vcoData.onOffValue[index] ? true : false} />On
-                      </label>
-                      <label>
-                        <input type="radio" name={vcoData.onOffName[index]} data-osc={vcoData.vcoId[index]} value="off" onChange={changeSound} defaultChecked={!vcoData.onOffValue[index] ? true : false} />Off
-                      </label>
-                    </div>
-                    <hr /> */}
                     <dl>
                       <dt>Wave: {vcoData.waveTypeValue[index]}</dt>
                       <dd>
@@ -956,15 +960,6 @@ function Inner() {
                 )}
                 <section id="noise" className="synth_section">
                   <h3>Noise</h3>
-                  {/* <div className="onOffButton">
-                    <label>
-                      <input type="radio" name="onOffNoise" data-osc="noise" value="on" onChange={changeSound} defaultChecked={onOffNoise ? true : false} />On
-                    </label>
-                    <label>
-                      <input type="radio" name="onOffNoise" data-osc="noise" value="off" onChange={changeSound} defaultChecked={!onOffNoise ? true : false} />Off
-                    </label>
-                  </div>
-                  <hr /> */}
                   <dl>
                     <dt>Wave: {waveTypeNoise}</dt>
                     <dd>
