@@ -53,7 +53,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>VCFにEg & LFOを適用 <a href="https://github.com/ryo-i/synth-generator/issues/5">#5</a></li>
+                    <li>Eg & LFOの対象を追記 <a href="https://github.com/ryo-i/synth-generator/issues/5">#5</a></li>
                     <li>Startボタンにstickyに適用 <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
                 </ul>
             </section>

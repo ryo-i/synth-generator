@@ -990,20 +990,20 @@ function Inner() {
                       <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
                     </dd>
                     <hr />
-                    <dt>EG-1 Amt (VCO-1): {amountEgOsc1}</dt>
+                    <dt>VCO-1<br />EG-1 Amt (octaves): {amountEgOsc1}</dt>
                     <dd>
                       <input type="range" data-type="vco1" name="amountEg" value={amountEgOsc1} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>EG-1 Amt (VCO-2): {amountEgOsc2}</dt>
+                    <dt>VCO-2<br />EG-1 Amt (octaves): {amountEgOsc2}</dt>
                     <dd>
                       <input type="range" data-type="vco2" name="amountEg" value={amountEgOsc2} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
                     <hr />
-                    <dt>LFO-1 Amt (VCO-1): {amountLfoOsc1}</dt>
+                    <dt>VCO-1<br />LFO-1 Amt (amplitude): {amountLfoOsc1}</dt>
                     <dd>
                       <input type="range" data-type="vco1" name="amountLfo" value={amountLfoOsc1} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO-1 Amt (VCO-2): {amountLfoOsc2}</dt>
+                    <dt>VCO-2<br />LFO-1 Amt (amplitude): {amountLfoOsc2}</dt>
                     <dd>
                       <input type="range" data-type="vco2" name="amountLfo" value={amountLfoOsc2} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
@@ -1044,11 +1044,11 @@ function Inner() {
                         )}
                     </dd>
                     <hr />
-                    <dt>EG-2 Amt: {amountEg2}</dt>
+                    <dt>EG-2 Amt (octaves): {amountEg2}</dt>
                     <dd>
                       <input type="range" data-type="vcf" name="amountEg" value={amountEg2} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO-2 Amt: {amountLfo2}</dt>
+                    <dt>LFO-2 Amt (amplitude): {amountLfo2}</dt>
                     <dd>
                       <input type="range" data-type="vcf" name="amountLfo" value={amountLfo2} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
@@ -1061,11 +1061,11 @@ function Inner() {
                 <section id="vca" className="synth_section">
                   <h3>VCA</h3>
                   <dl>
-                    <dt>EG-3 Amt (Volume): {amountEg3}</dt>
+                    <dt>EG-3 Amt (gain): {amountEg3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountEg" value={amountEg3} onChange={changeEg}  min="0" max="1" step="0.01" />
                     </dd>
-                    <dt>LFO-3 Amt: {amountLfo3}</dt>
+                    <dt>LFO-3 Amt (amplitude): {amountLfo3}</dt>
                     <dd>
                       <input type="range" data-type="vca" name="amountLfo" value={amountLfo3} onChange={changeLfo}  min="0" max="1" step="0.01" />
                     </dd>
