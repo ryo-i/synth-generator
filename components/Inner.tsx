@@ -96,35 +96,6 @@ const ScalePlayer = styled.div`
     }
   }
 
-  .startButton {
-    position: absolute;
-    z-index: 100;
-    top: 0;
-    width: 100%;
-    height: 146px;
-    background: rgba(0,0,0,0.7);
-    display: grid;
-    place-items: center;
-    button {
-      background: #A63744;
-      padding: 10px 20px;
-      color: #fff;
-      font-size: 20px;
-      border: none;
-      border-radius: 10px;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
-      animation: ${flashing} 1.5s linear infinite;
-      &:hover {
-        opacity: 0.8;
-        cursor: pointer;
-      }
-    }
-
-    &--hide {
-      display: none;
-    }
-  }
-
   #scale_text {
     margin: 15px 0;
     text-align: center;
@@ -145,6 +116,7 @@ const ScalePlayer = styled.div`
     max-width: 700px;
     background: #222;
     position: sticky;
+    z-index: 200;
     top: 146px;
     .react-tabs__tab-list {
       margin: 0 0 5px;
@@ -159,6 +131,35 @@ const ScalePlayer = styled.div`
           background: #fff;
         }
       }
+    }
+  }
+
+  .startButton {
+    position: absolute;
+    z-index: 300;
+    top: -150px;
+    left: 0;
+    width: 100%;
+    height: 146px;
+    background: rgba(0,0,0,0.7);
+    display: grid;
+    place-items: center;
+    button {
+      background: #A63744;
+      padding: 10px 20px;
+      color: #fff;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+      animation: ${flashing} 1.5s linear infinite;
+      &:hover {
+        opacity: 0.8;
+        cursor: pointer;
+      }
+    }
+    &--hide {
+      display: none;
     }
   }
 
@@ -911,9 +912,6 @@ function Inner() {
             )}
           </div>
         </div>
-        <div className={(isStart === 'true') ? 'startButton startButton--hide' : 'startButton'}>
-          <button type="button" name="start" value={isStart} onClick={changeStart}>Start</button>
-        </div>
         <div id="synth">
           <Tabs>
             <nav  id="synth_menu">
@@ -923,6 +921,9 @@ function Inner() {
                   <Tab>VCF</Tab>
                   <Tab>VCA</Tab>
               </TabList>
+              <div className={(isStart === 'true') ? 'startButton startButton--hide' : 'startButton'}>
+                <button type="button" name="start" value={isStart} onClick={changeStart}>Start</button>
+              </div>
             </nav>
             <div id="synth_pannels">
               <TabPanel>
