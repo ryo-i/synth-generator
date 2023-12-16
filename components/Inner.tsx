@@ -121,7 +121,7 @@ const ScalePlayer = styled.div`
     .react-tabs__tab-list {
       margin: 0 0 5px;
       border: none;
-      font-size: 12px;
+      font-size: 10px;
       .react-tabs__tab {
         margin: 0 5px 5px 0;
         border: 1px solid #333;
@@ -362,6 +362,22 @@ function Inner() {
   const [minLfo3, setMinLfo3] = useState(0);
   const [maxLfo3, setMaxLfo3] = useState(0);
   const [amountLfo3, setAmountLfo3] = useState(0);
+  const [distortion, setDistortion] = useState(null);
+  const [distortionValue, setDistortionValue] = useState(0);
+  const [distortionWet, setDistortionWet] = useState(0);
+  const [chorus, setChorus] = useState(null);
+  const [chorusFrequency, setChorusFrequency] = useState(0);
+  const [chorusDelayTime, setChorusDelayTime] = useState(0);
+  const [chorusDepth, setChorusDepth] = useState(0);
+  const [chorusWet, setChorusWet] = useState(0);
+  const [delay, setDelay] = useState(null);
+  const [delayTime, setDelayTime] = useState(0);
+  const [delayFeedback, setDelayFeedback] = useState(0);
+  const [delayWet, setDelayWet] = useState(0);
+  const [reverb, setReverb] = useState(null);
+  const [reverbDecay, setReverbDecay] = useState(0.01);
+  const [reverbWet, setReverbWet] = useState(0);
+
 
   const vcoData = {
     vcoName: ['VCO-1', 'VCO-2'],
@@ -459,6 +475,11 @@ function Inner() {
     setLfoOsc2(new Tone.LFO());
     setLfo2(new Tone.LFO());
     setLfo3(new Tone.LFO());
+
+    setDistortion(new Tone.Distortion())
+    setChorus(new Tone.Chorus());
+    setDelay(new Tone.FeedbackDelay());
+    setReverb(new Tone.Reverb());
   },[]);
 
 
@@ -650,7 +671,27 @@ function Inner() {
     lfo3.connect(amplifier.gain);
 
     amplifier.gain.value = amountEg3;
-    amplifier.toDestination();
+    amplifier.connect(distortion);
+
+    // Effector
+    distortion.distortion = distortionValue;
+    distortion.wet.value = distortionWet;
+    distortion.connect(chorus);
+
+    chorus.frequency.value = chorusFrequency;
+    chorus.delayTime = chorusDelayTime;
+    chorus.depth = chorusDepth;
+    chorus.wet.value = chorusWet;
+    chorus.connect(delay);
+
+    delay.delayTime.value = delayTime;
+    delay.feedback.value = delayFeedback;
+    delay.wet.value = delayWet;
+    delay.connect(reverb);
+
+    reverb.decay = reverbDecay;
+    reverb.wet.value = reverbWet;
+    reverb.toDestination();
   };
 
 
@@ -893,6 +934,49 @@ function Inner() {
   };
 
 
+  // Effector設定
+  const changeEffector = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const keyValue: number = Number(e.target.value);
+    const keyName: string = e.target.name;
+
+    switch (keyName) {
+      case 'distortionValue':
+        setDistortionValue(keyValue);
+        break;
+      case 'distortionWet':
+        setDistortionWet(keyValue);
+        break;
+      case 'chorusFrequency':
+        setChorusFrequency(keyValue);
+        break;
+      case 'chorusDelayTime':
+        setChorusDelayTime(keyValue);
+        break;
+      case 'chorusDepth':
+        setChorusDepth(keyValue);
+        break;
+      case 'chorusWet':
+        setChorusWet(keyValue);
+        break;
+      case 'delayTime':
+        setDelayTime(keyValue);
+        break;
+      case 'delayFeedback':
+        setDelayFeedback(keyValue);
+        break;
+      case 'delayWet':
+        setDelayWet(keyValue);
+        break;
+      case 'reverbDecay':
+        setReverbDecay(keyValue);
+        break;
+      case 'reverbWet':
+        setReverbWet(keyValue);
+        break;
+    }
+  };
+
+
   // JSX
   return (
     <>
@@ -920,6 +1004,7 @@ function Inner() {
                   <Tab>MIXER</Tab>
                   <Tab>VCF</Tab>
                   <Tab>VCA</Tab>
+                  <Tab>EFX</Tab>
               </TabList>
               <div className={(isStart === 'true') ? 'startButton startButton--hide' : 'startButton'}>
                 <button type="button" name="start" value={isStart} onClick={changeStart}>Start</button>
@@ -1073,6 +1158,84 @@ function Inner() {
                 </section>
                 <Eg type="vca" number={3} attack={attack3} decay={decay3} sustain={sustain3} release={release3} changeEg={changeEg} />
                 <Lfo type="vca" number={3} waveTypeLfo={waveTypeLfo3} frequencyLfo={frequencyLfo3} delayLfo={delayLfo3} minLfo={minLfo3} maxLfo={maxLfo3} changeLfo={changeLfo} changeWaveType={changeWaveType} />
+              </TabPanel>
+              <TabPanel>
+                <section id="effector" className="synth_section">
+                  <h3>EFFECTOR</h3>
+                  <dl>
+                    <h4>Distortion</h4>
+                    <dt>
+                      Distortion: {distortionValue}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="distortion" name="distortionValue" value={distortionValue} onChange={changeEffector}  min="0" max="10" step="0.01" />
+                    </dd>
+                    <dt>
+                      Wet: {distortionWet}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="distortion" name="distortionWet" value={distortionWet} onChange={changeEffector}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <hr />
+                    <h4>Chorus</h4>
+                    <dt>
+                      Frequency: {chorusFrequency}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="chorus" name="chorusFrequency" value={chorusFrequency} onChange={changeEffector}  min="0" max="10000" step="1" />
+                    </dd>
+                    <dt>
+                      Delay Time: {chorusDelayTime}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="chorus" name="chorusDelayTime" value={chorusDelayTime} onChange={changeEffector}  min="0" max="1000" step="1" />
+                    </dd>
+                    <dt>
+                      Depth: {chorusDepth}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="chorus" name="chorusDepth" value={chorusDepth} onChange={changeEffector}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>
+                      Wet: {chorusWet}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="chorus" name="chorusWet" value={chorusWet} onChange={changeEffector}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <hr />
+                    <h4>Delay</h4>
+                    <dt>
+                      Delay Time: {delayTime}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="delay" name="delayTime" value={delayTime} onChange={changeEffector}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <dt>Delay Feedback: {delayFeedback}</dt>
+                    <dd>
+                      <input type="range" data-type="delay" name="delayFeedback" value={delayFeedback} onChange={changeEffector}  min="0" max="0.9" step="0.01" />
+                    </dd>
+                    <dt>
+                      Wet: {delayWet}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="delay" name="delayWet" value={delayWet} onChange={changeEffector}  min="0" max="1" step="0.01" />
+                    </dd>
+                    <hr />
+                    <h4>Reverb</h4>
+                    <dt>
+                      Reverb Delay: {reverbDecay}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="reverb" name="reverbDecay" value={reverbDecay} onChange={changeEffector}  min="0.01" max="10" step="0.01" />
+                    </dd>
+                    <dt>
+                      Wet: {reverbWet}
+                    </dt>
+                    <dd>
+                      <input type="range" data-type="reverb" name="reverbWet" value={reverbWet} onChange={changeEffector}  min="0" max="1" step="0.01" />
+                    </dd>
+                  </dl>
+                </section>
               </TabPanel>
             </div>
           </Tabs>
