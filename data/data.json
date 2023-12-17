@@ -36,7 +36,7 @@
           {"value": "C8", "className": "w_key c_key", "keyName": "C8"}
         ]
       },
-      "vcoName": ["vco1", "vco2"],
+      "vcoName": ["vco1", "vco2", "vco3"],
       "waveTypes": ["sine", "triangle", "sawtooth", "pulse"],
       "noiseWaveTypes": ["white", "brown", "pink"],
       "lfoWaveTypes": ["sine", "triangle", "sawtooth", "square"],
