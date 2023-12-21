@@ -40,8 +40,7 @@
       "waveTypes": ["sine", "triangle", "sawtooth", "pulse"],
       "noiseWaveTypes": ["white", "brown", "pink"],
       "lfoWaveTypes": ["sine", "triangle", "sawtooth", "square"],
-      "filterTypes": ["lowpass", "highpass", "bandpass",
-			"lowshelf", "highshelf", "notch", "allpass", "peaking"],
+      "filterTypes": ["lowpass", "highpass", "bandpass"],
       "rollOff": [-12, -24, -48, -96]
     },
     "footer": {
