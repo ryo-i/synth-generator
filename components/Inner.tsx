@@ -22,7 +22,7 @@ const ScalePlayer = styled.div`
   color: #fff;
   position: relative;
   #key {
-    max-width: calc(${keyWidth + 'px'} * ${keyLlength});
+    max-width: 700px;
     margin: 0 auto 4px;
     overflow-x: scroll;
     position: sticky;

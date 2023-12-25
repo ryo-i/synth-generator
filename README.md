@@ -8,10 +8,7 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- VCFのわかりづらいフィルターを除外 [#4](https://github.com/ryo-i/synth-generator/issues/4)
-- エフェクターを追加 [#6](https://github.com/ryo-i/synth-generator/issues/6)
-- Eg & LFOの対象を追記 [#5](https://github.com/ryo-i/synth-generator/issues/5)
-- Startボタンにstickyに適用 [#7](https://github.com/ryo-i/synth-generator/issues/7)
+- About着手 & PCの鍵盤幅を変更 [#7](https://github.com/ryo-i/synth-generator/issues/7)
 
 ## 詳細（ブログ）
 
