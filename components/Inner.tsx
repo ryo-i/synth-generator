@@ -1169,7 +1169,7 @@ function Inner() {
                       <input type="range" name="mixerNoise" data-osc="noise" value={mixerNoise} onChange={changeMixer}  min="0" max="1" step="0.01" />
                     </dd>
                     <hr />
-                    <h4>EG-1</h4>
+                    <h4>EG-1 Amount</h4>
                     {inner.vcoName.map((vcoName, index) =>
                       <>
                         <dt>{vcoData.vcoName[index]}Amt (octaves): {vcoData.amountEgOscValue[index]}</dt>
@@ -1179,7 +1179,7 @@ function Inner() {
                       </>
                     )}
                     <hr />
-                    <h4>LFO-1</h4>
+                    <h4>LFO-1 Amount</h4>
                     {inner.vcoName.map((vcoName, index) =>
                       <>
                         <dt>{vcoData.vcoName[index]}Amt (amplitude): {vcoData.amountLfoOscValue[index]}</dt>

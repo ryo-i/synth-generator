@@ -25,11 +25,24 @@ const Main = styled.main`
         padding: 0 0 10px;
         border-bottom: 1px solid #ddd;
     }
+    h4 {
+        margin: 40px 0 5px;
+        padding: 0 0 5px;
+        border-bottom: 1px dotted #ddd;
+    }
     figure {
         margin: 0 0 30px;
         img {
             width: 100%;
             box-shadow: 0 0 15px 2px rgb(0 0 0 / 10%);
+        }
+    }
+    dl {
+        dt, dd {
+            margin: 0;
+        }
+        dd {
+            font-size: 0.9em;
         }
     }
 `;
@@ -69,23 +82,162 @@ function About() {
                 </section>
                 <section>
                     <h3>VCO</h3>
-                    <p>（作成中）</p>
+                    <p>3オシレーターとノイズの波形などを設定できるパート</p>
+                    <section>
+                        <h4>VCO-1/VCO-2/VCO-3</h4>
+                        <dl>
+                            <dt>Wave:</dt>
+                            <dd>初期値はsawtooth。sine,triangle, sawtooth,pulseがある</dd>
+                            <dt>Pulse Width:</dt>
+                            <dd>初期値は0（50％）</dd>
+                            <dt>Octave:</dt>
+                            <dd>初期値は0</dd>
+                            <dt>Coarse:</dt>
+                            <dd>初期値は0</dd>
+                            <dt>Fine:</dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>Noise</h4>
+                        <p></p>
+                        <dl>
+                            <dt>Wave:</dt>
+                            <dd>初期値はwhite。white, brown, pinkがある</dd>
+                            <dt>Pulse Width:</dt>
+                            <dd>初期値は0（50％）</dd>
+                            <dt>Octave:</dt>
+                            <dd>初期値は0</dd>
+                            <dt>Coarse:</dt>
+                            <dd>初期値は0</dd>
+                            <dt>Fine:</dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
                 </section>
                 <section>
                     <h3>MIXER</h3>
-                    <p>（作成中）</p>
+                    <p>VAOの4つのオシレーターの音量をミックスし、EGやLFOで音程変化（ビブラート）</p>
+                    <section>
+                        <h4>Gain</h4>
+                        <dl>
+                            <dt>VCO-1: </dt>
+                            <dd>初期値は0.5</dd>
+                            <dt>VCO-2: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>VCO-3: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Noise: </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>EG-1 Amount</h4>
+                        <dl>
+                            <dt>VCO-1Amt (octaves): </dt>
+                            <dd>初期値は0</dd>
+                            <dt>VCO-2Amt (octaves): </dt>
+                            <dd>初期値は0</dd>
+                            <dt>VCO-3Amt (octaves): </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>LFO-1 Amount</h4>
+                        <dl>
+                            <dt>VCO-1Amt (amplitude): </dt>
+                            <dd>初期値は0</dd>
+                            <dt>VCO-2Amt (amplitude): </dt>
+                            <dd>初期値は0</dd>
+                            <dt>VCO-3Amt (amplitude): </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>EG-1</h4>
+                        <dl>
+                            <dt>Attack: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Decay: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Sustain: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Release: </dt>
+                            <dd>初期値は0.01</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>LFO-1</h4>
+                        <dl>
+                            <dt>Wave: </dt>
+                            <dd>初期値はsine。sine, triangle, sawtooth, squareがある</dd>
+                            <dt>Frequency: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Delay: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Min: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Max: </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
                 </section>
                 <section>
                     <h3>VCF</h3>
-                    <p>（作成中）</p>
+                    <p>VCOの音にフィルターをかけて倍音をカット、EGやLFOで音程変化（ワウ）</p>
+                    <section>
+                        <h4>VCF</h4>
+                        <dl>
+                            <dt>Filter: </dt>
+                            <dd>初期値はlowpass。lowpass, highpass, bandpassがある。</dd>
+                            <dt>Frequency (cut off): </dt>
+                            <dd>初期値は10000Hz</dd>
+                            <dt>Q (Resonance): </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Roll off: </dt>
+                            <dd>初期値は-12dB/oct。-12, -24, -48, -96がある。</dd>
+                            <dt>EG-2 Amt (octaves): </dt>
+                            <dd>初期値は1</dd>
+                            <dt>LFO-2 Amt (amplitude): </dt>
+                            <dd>初期値は1</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>EG-2</h4>
+                        <dl>
+                            <dt></dt>
+                            <dd>初期値は</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>LFO-2</h4>
+                        <dl>
+                            <dt></dt>
+                            <dd>初期値は</dd>
+                        </dl>
+                    </section>
                 </section>
                 <section>
                     <h3>VCA</h3>
                     <p>（作成中）</p>
+                    <section>
+                        <h4></h4>
+                        <dl>
+                            <dt></dt>
+                            <dd>初期値は</dd>
+                        </dl>
+                    </section>
                 </section>
                 <section>
                     <h3>EFFECTOR</h3>
                     <p>（作成中）</p>
+                    <section>
+                        <h4></h4>
+                        <dl>
+                            <dt></dt>
+                            <dd>初期値は</dd>
+                        </dl>
+                    </section>
                 </section>
             </section>
             <section>
