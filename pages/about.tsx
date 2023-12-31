@@ -66,7 +66,7 @@ function About() {
             <section>
                 <h2>進捗</h2>
                 <ul>
-                    <li>Aboutの説明文を追加 <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
+                    <li>ブログのURLを追加 <a href="https://github.com/ryo-i/synth-generator/issues/7">#7</a></li>
                 </ul>
             </section>
             <section>
@@ -333,7 +333,7 @@ function About() {
                 <h2>詳細</h2>
                 <section>
                     <h3>ブログ</h3>
-                    <p>作成中</p>
+                    <p><a href="https://www.i-ryo.com/entry/2023/12/31/170449" target="_blank">【Tone.js & Next.js】Tone.jsでシンセジェネレーターを作った</a></p>
                 </section>
                 <section>
                     <h3>ソースコード（GitHub）</h3>

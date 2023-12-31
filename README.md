@@ -8,8 +8,8 @@ Tone.jsを使ったシンセジェネレーター
 
 ## 進捗（コミット）
 
-- About着手 & PCの鍵盤幅を変更 [#7](https://github.com/ryo-i/synth-generator/issues/7)
+- ブログのURLを追加 [#7](https://github.com/ryo-i/synth-generator/issues/7)
 
 ## 詳細（ブログ）
 
-※参考：[作成中]()
+※参考：[【Tone.js & Next.js】Tone.jsでシンセジェネレーターを作った](https://www.i-ryo.com/entry/2023/12/31/170449)
