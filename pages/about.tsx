@@ -26,7 +26,7 @@ const Main = styled.main`
         border-bottom: 1px solid #ddd;
     }
     h4 {
-        margin: 40px 0 5px;
+        margin: 5px 0 5px;
         padding: 0 0 5px;
         border-bottom: 1px dotted #ddd;
     }
@@ -117,7 +117,7 @@ function About() {
                 </section>
                 <section>
                     <h3>MIXER</h3>
-                    <p>VAOの4つのオシレーターの音量をミックスし、EGやLFOで音程変化（ビブラート）</p>
+                    <p>VAOの4つのオシレーターの音量をミックス。EGやLFOで音程変化（ビブラート効果）</p>
                     <section>
                         <h4>Gain</h4>
                         <dl>
@@ -184,7 +184,7 @@ function About() {
                 </section>
                 <section>
                     <h3>VCF</h3>
-                    <p>VCOの音にフィルターをかけて倍音をカット、EGやLFOで音程変化（ワウ）</p>
+                    <p>VCOの音にフィルターをかけて倍音をカット。EGやLFOで音程変化（ワウ効果）</p>
                     <section>
                         <h4>VCF</h4>
                         <dl>
@@ -205,37 +205,118 @@ function About() {
                     <section>
                         <h4>EG-2</h4>
                         <dl>
-                            <dt></dt>
-                            <dd>初期値は</dd>
+                            <dt>Attack: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Decay: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Sustain: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Release: </dt>
+                            <dd>初期値は0.01</dd>
                         </dl>
                     </section>
                     <section>
                         <h4>LFO-2</h4>
                         <dl>
-                            <dt></dt>
-                            <dd>初期値は</dd>
+                            <dt>Wave: </dt>
+                            <dd>初期値はsine。sine, triangle, sawtooth, squareがある</dd>
+                            <dt>Frequency: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Delay: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Min: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Max: </dt>
+                            <dd>初期値は0</dd>
                         </dl>
                     </section>
                 </section>
                 <section>
                     <h3>VCA</h3>
-                    <p>（作成中）</p>
+                    <p>VCFの音の音量を変更。EGやLFOで音量変化（トレモロ効果）</p>
                     <section>
-                        <h4></h4>
+                        <h4>VCA</h4>
                         <dl>
-                            <dt></dt>
-                            <dd>初期値は</dd>
+                            <dt>EG-3 Amt (gain): </dt>
+                            <dd>初期値は1</dd>
+                        </dl>
+                        <dl>
+                            <dt>LFO-3 Amt (amplitude): </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>EG-3</h4>
+                        <dl>
+                            <dt>Attack: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Decay: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Sustain: </dt>
+                            <dd>初期値は1</dd>
+                            <dt>Release: </dt>
+                            <dd>初期値は0.01</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>LFO-3</h4>
+                        <dl>
+                            <dt>Wave: </dt>
+                            <dd>初期値はsine。sine, triangle, sawtooth, squareがある</dd>
+                            <dt>Frequency: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Delay: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Min: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Max: </dt>
+                            <dd>初期値は0</dd>
                         </dl>
                     </section>
                 </section>
                 <section>
                     <h3>EFFECTOR</h3>
-                    <p>（作成中）</p>
+                    <p>歪み系（Distortion）、モジュレーション系（Chorus）、空関系（）</p>
                     <section>
-                        <h4></h4>
+                        <h4>Distortion</h4>
                         <dl>
-                            <dt></dt>
-                            <dd>初期値は</dd>
+                            <dt>Distortion: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Wet: </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>Chorus</h4>
+                        <dl>
+                            <dt>Frequency: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Delay Time: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Depth: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Wet: </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>Delay</h4>
+                        <dl>
+                            <dt>Delay Time: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Delay Feedback: </dt>
+                            <dd>初期値は0</dd>
+                            <dt>Wet: </dt>
+                            <dd>初期値は0</dd>
+                        </dl>
+                    </section>
+                    <section>
+                        <h4>Reverb</h4>
+                        <dl>
+                            <dt>Reverb Delay: </dt>
+                            <dd>初期値は0.01</dd>
+                            <dt>Wet: </dt>
+                            <dd>初期値は0</dd>
                         </dl>
                     </section>
                 </section>
