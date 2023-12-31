@@ -1275,13 +1275,13 @@ function Inner() {
                     <hr />
                     <h4>Chorus</h4>
                     <dt>
-                      Frequency: {chorusFrequency}
+                      Frequency: {chorusFrequency}Hz
                     </dt>
                     <dd>
                       <input type="range" data-type="chorus" name="chorusFrequency" value={chorusFrequency} onChange={changeEffector}  min="0" max="10000" step="1" />
                     </dd>
                     <dt>
-                      Delay Time: {chorusDelayTime}
+                      Delay Time: {chorusDelayTime}ms
                     </dt>
                     <dd>
                       <input type="range" data-type="chorus" name="chorusDelayTime" value={chorusDelayTime} onChange={changeEffector}  min="0" max="1000" step="1" />
